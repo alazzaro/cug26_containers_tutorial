@@ -4,7 +4,7 @@ We will run the training on the [HPE Cray EX LUMI supercomputer](https://lumi-su
 You can check the [LUMI documentation](https://docs.lumi-supercomputer.eu/firststeps/) to get familiar with the system.
 
 In this document, we provide detailed instructions on how to access LUMI for the CUG tutorial on containers.
-For logistics reasons, it is **highly recommended** that you start the procedure as soon as possible. Consider that it can take up to a day to get full access, so we can not promise any access on the day of the tutorial.
+For logistics reasons, it is **highly recommended** that you start the procedure as soon as possible. Consider that it can take up to a day to get full access, so we cannot promise any access on the same day of the tutorial.
 
 If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1b](https://crayusers.slack.com/archives/C0AU57Y2SG5) of the CUG workspace.
 
@@ -12,7 +12,7 @@ If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1
 
 1. Provide us with your name and organizational email: reach us on Slack or send us an [email](mailto:alfio.lazzaro@hpe.com).
 2. Wait until you receive an email that you have been invited to the project.
-3. Click on the invite link, which will bring you to the Puhuri Portal.
+3. Click on the invite link, which will bring you to the Puhuri Portal (direct [link](https://puhuri-portal.neic.no/) access).
 4. Click on "Sign in with MyAccessID".
 5. Click on "Login with eduID Sweded" (this is for users who do not have an academic identity or supported eIDAS digital identity, see [here](https://puhuri.neic.no/user_guides/myaccessid_registration/) for more details).
 6. Then you are forwarded to the eduID Sweden login page where you can log in with an existing account or create a new one.
