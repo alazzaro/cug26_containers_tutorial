@@ -8,7 +8,7 @@ For logistics reasons, it is **highly recommended** that you start the procedure
 
 If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1b](https://crayusers.slack.com/archives/C0AU57Y2SG5) of the CUG workspace.
 
-*Note: If you have an existing LUMI account on Puhuri, you can skip steps 7-10* 
+*Note: If you have an existing LUMI account on Puhuri, you can skip steps 7-10*
 
 1. Provide us with your name and organizational email: reach us on Slack or send us an [email](mailto:alfio.lazzaro@hpe.com).
 2. Wait until you receive an email that you have been invited to the project.
@@ -40,24 +40,24 @@ If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1
     * Click on “New Key” and then add the public part of your SSH key and save the key by clicking “Add SSH key”.
     * You will receive an email with your `username`.
     * Key propagation to the service provider may take 1-2 hours.
-10. Test the SSH connection: `ssh <username>@lumi.csc.fi`. If you get the following output, then you are all set! Type exit to end the SSH session.
+10. Test the SSH connection: `ssh <username>@lumi.csc.fi`. Check if you get the following output. Next, check that you are part of the project `project_465002906` by running the command `groups`. If everything is OK, then you are all set! Type exit to end the SSH session.
 ```
- *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
-                                                       *      *  *    
-   * ████       ████   ████   █████▄    ▄█████   ████     *     *     
- *   ████       ████   ████   ████ █▄  ▄█ ████   ████         ,    *, 
-     ████       ████   ████   ████  ████  ████   ████  *   *  |\_ _/| 
-     ████       ████   ████   ████   ▀▀   ████   ████   *    .| ." ,| 
-  *  ████       ████   ████   ████        ████   ████        /(  \_\) 
-     ████       ████   ████   ████        ████   ████       /    ,-,| 
- *   ████▄▄▄▄▄  ▀███   ███▀   ████        ████   ████ *    * /      \ 
-     █████████    ▀▀███▀▀     ████        ████   ████  * ,/  (      * 
- *                                                     ,/       |  /  
-  * ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒/    \  * || |  
-                 *              *               ,_   (       )| || |  
-*   *    *    The Supercomputer of the North  * | `\_|   __ /_| || |  
-        **               *            * *       \_____\______)\__)__) 
-   .********----------*******-------******----------****************. 
+ *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *
+                                                       *      *  *
+   * ████       ████   ████   █████▄    ▄█████   ████     *     *
+ *   ████       ████   ████   ████ █▄  ▄█ ████   ████         ,    *,
+     ████       ████   ████   ████  ████  ████   ████  *   *  |\_ _/|
+     ████       ████   ████   ████   ▀▀   ████   ████   *    .| ." ,|
+  *  ████       ████   ████   ████        ████   ████        /(  \_\)
+     ████       ████   ████   ████        ████   ████       /    ,-,|
+ *   ████▄▄▄▄▄  ▀███   ███▀   ████        ████   ████ *    * /      \
+     █████████    ▀▀███▀▀     ████        ████   ████  * ,/  (      *
+ *                                                     ,/       |  /
+  * ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒/    \  * || |
+                 *              *               ,_   (       )| || |
+*   *    *    The Supercomputer of the North  * | `\_|   __ /_| || |
+        **               *            * *       \_____\______)\__)__)
+   .********----------*******-------******----------****************.
 ....
 ```
 11. Wait for the tutorial to start.
