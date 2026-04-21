@@ -38,7 +38,8 @@ If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1
     * Click “Settings” from the left-side menu.
     * Click on “SSH Keys”.
     * Click on “New Key” and then add the public part of your SSH key and save the key by clicking “Add SSH key”.
-    * Key propagation to the service provider may take 1-2 hours. You will receive an email once the account is created with your `username`.
+    * You will receive an email with your `username`.
+    * Key propagation to the service provider may take 1-2 hours.
 10. Test the SSH connection: `ssh <username>@lumi.csc.fi`. If you get the following output, then you are all set! Type exit to end the SSH session.
 ```
  *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
