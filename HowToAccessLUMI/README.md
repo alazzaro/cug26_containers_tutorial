@@ -17,6 +17,7 @@ If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1
 <p align="center">
 <img src="images/Puhuri.png" width="400">
 </p>
+
 5. Click on "Login with eduID Sweden" (this is for users who do not have an academic identity or supported eIDAS digital identity, see [here](https://puhuri.neic.no/user_guides/myaccessid_registration/) for more details).
 6. Then you are forwarded to the eduID Sweden login page where you can log in with an existing account or create a new one.
 7. For creating a new account, click on "CREATE EDUID" button at the top right corner. Please use your email and follow the instructions. **Please remember to use your organizational email, not the private one.**
