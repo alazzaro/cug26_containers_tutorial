@@ -15,17 +15,25 @@ If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1
 3. Click on the invite link, which will bring you to the Puhuri Portal (direct [link](https://puhuri-portal.neic.no/) access).
 4. Click on "Sign in with MyAccessID", e.g.
 <p align="center">
-<img src="images/Puhuri.png" width="400">
+   <img src="images/Puhuri.png" width="400">
 </p>
 
-5. Click on "Login with eduID Sweden" (this is for users who do not have an academic identity or supported eIDAS digital identity, see [here](https://puhuri.neic.no/user_guides/myaccessid_registration/) for more details).
-6. Then you are forwarded to the eduID Sweden login page where you can log in with an existing account or create a new one.
-7. For creating a new account, click on "CREATE EDUID" button at the top right corner. Please use your email and follow the instructions. **Please remember to use your organizational email, not the private one.**
+5. Click on "Login with eduID Sweden" (this is for users who do not have an academic identity or supported eIDAS digital identity, see [here](https://puhuri.neic.no/user_guides/myaccessid_registration/) for more details), e.g.
+<p align="center">
+   <img src="images/MyAccessID.png" width="400">
+</p>
+
+6. Then you are forwarded to the eduID Sweden login page, where you can log in with an existing account or create a new one, e.g.
+<p align="center">
+   <img src="images/eduID.png" width="400">
+</p>
+
+7. For creating a new account, click on "CREATE EDUID" button at the top right corner. Please use your email and follow the instructions. **Please remember to use your organizational email, not your private one.**
     * You are asked to accept the eduID rules and prove you are a human.
-    * After adding your email address to register, you will get a verification email with a code to verify your email address. You're asked to enter your first name, last name and other relevant information. Required information may change over time. **There is NO need to put an ID number, mobile phone or anything else in the “identity” or “advanced settings” tabs.**
+    * After adding your email address to register, you will get a verification email with a code to verify your email address. You're asked to enter your first name, last name, and other relevant information. Required information may change over time. **There is NO need to put an ID number, mobile phone or anything else in the “identity” or “advanced settings” tabs.**
     * After finishing the registration, if everything is correct, you will be redirected back to MyAccessID to accept Terms of Use documents and Privacy Policies.
-8. Now that you are registered to Puhuri via eduID Sweded, you should accept the invitation to the project that it will appear on your account.
-9. The next step is install SSH client on your laptop and set up SSH keys on the Puhuri Portal, see [here](https://puhuri.neic.no/user_guides/myaccessid-ssh-key/) for more details.
+8. Now that you are registered to Puhuri via eduID Sweden, you should accept the invitation to the project that will appear on your account.
+9. The next step is setting up SSH keys on the Puhuri Portal, see [here](https://puhuri.neic.no/user_guides/myaccessid-ssh-key/) for more details.
     * Login to the MyAccessID profile [management page](https://mms.myaccessid.org/fed-apps/profile/).
     * Click “Settings” from the left-side menu.
     * Click on “SSH Keys”.
