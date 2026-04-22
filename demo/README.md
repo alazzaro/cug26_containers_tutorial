@@ -91,16 +91,25 @@ mkdir /flash/project_465002906/$USER
 
 ### Environment setup
 
-For convenience, we provide a script to setup your environment for SLURM:
+For convenience, we provide a script to setup your environment for SLURM (project, partition, and reservation):
 ```console
 cp /project/project_465002906/setup/lumi_g.sh /scratch/project_465002906/$USER
 cd /scratch/project_465002906/$USER
 source lumi_g.sh
 ```
 It will change the prompt:
-```text
 
+```text
+INFO: Use reservation cug_tutorial
+LUMI_G-RES [15:32:41] alfiolaz@uan02:/scratch/project_465002906/alfiolaz >
 ```
+The reservation is only available during the tutorial, otherwise you will get the following output:
+
+```text
+INFO: No SLURM reservation is used
+LUMI_G [15:32:41] alfiolaz@uan02:/scratch/project_465002906/alfiolaz >
+```
+
 
 
 # Check Singularity version
