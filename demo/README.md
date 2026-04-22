@@ -137,6 +137,8 @@ singularity-ce version 4.1.3-150500.10.7
 
 ## Basic Singularity Commands: Use Pre-built Images
 
+### How to get help
+
 Use `--help` flag to check the list of Singularity commands and flags:
 ```console
 singularity --help
@@ -154,5 +156,14 @@ cache       delete      instance    oci         pull        remote      search  
 capability  exec        key         overlay     push        run         shell       test    
 ```
 
-Further help per each command via `--help` flag, e.g. singularity build --help
+Further help per each command via `--help` flag after the command, e.g. 
+```console
+singularity build --help
+```
+it will show the help specific for the build command.
+Official documentation is available on the Singularity [webpage](https://sylabs.io/docs/).
+
+### Use-case Example
+
+
 
