@@ -89,6 +89,19 @@ mkdir /scratch/project_465002906/$USER
 mkdir /flash/project_465002906/$USER
 ```
 
+### Environment setup
+
+For convenience, we provide a script to setup your environment for SLURM:
+```console
+cp /project/project_465002906/setup/lumi_g.sh /scratch/project_465002906/$USER
+cd /scratch/project_465002906/$USER
+source lumi_g.sh
+```
+It will change the prompt:
+```text
+
+```
+
 
 # Check Singularity version
 ```
