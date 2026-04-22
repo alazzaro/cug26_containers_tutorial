@@ -110,9 +110,28 @@ INFO: No SLURM reservation is used
 LUMI_G [15:32:41] alfiolaz@uan02:/scratch/project_465002906/alfiolaz >
 ```
 
-
-
-# Check Singularity version
+### Modules
+Enable the `PrgEnv-gnu` and `rocm` modules:
+```console
+module load PrgEnv-gnu
+module load rocm
 ```
 
+We can add these two lines to the `lumi_g.sh` script.
+
+
+### Check Singularity version
+
+LUMI uses singularity to run containers:
+
+```console
+singularity --version
+which singularity
 ```
+
+Output example:
+```text
+singularity-ce version 4.1.3-150500.10.7
+/usr/bin/singularity
+```
+
