@@ -261,8 +261,35 @@ Output example:
 You can use the Singularity `inspect` command to check the image recipe file.
 See `singularity inspect --help` for more info.
 
+You can also check the Singularity cache after the `pull`:
 
-### Run the Container
+```console
+singularity cache list -v
+```
+
+Output example:
+
+```text
+NAME                     DATE CREATED           SIZE             TYPE
+1e1bb20756a85e159dfb79   2026-04-22 21:30:25    225.14 MiB       blob
+20d12c8f3f3fbb5bd2b836   2026-04-22 21:30:23    64.65 MiB        blob
+39b143cd1af9f4fe00885c   2026-04-22 21:30:26    7.25 KiB         blob
+3b32e3bb7338c216b077e9   2026-04-22 21:30:23    47.02 MiB        blob
+5467f93954cfe1451f4333   2026-04-22 21:30:22    24.44 MiB        blob
+6ac84d64ea646236b4d710   2026-04-22 21:30:22    10.38 KiB        blob
+73527f5d1721303008fbf3   2026-04-22 21:30:24    160.35 MiB       blob
+7c7782df5e7281b07fbd61   2026-04-22 21:30:20    7.45 KiB         blob
+8b127759eafed7c645be1b   2026-04-22 21:30:22    1.96 KiB         blob
+b798e1a34cb3cdf7749533   2026-04-22 21:30:22    4.38 MiB         blob
+efebbe38852e8d563c3ab1   2026-04-22 21:30:26    2.43 KiB         blob
+sha256:efebbe38852e8d5   2026-04-22 21:31:32    497.85 MiB       oci-tmp
+
+There are 1 container file(s) using 497.85 MiB and 11 oci blob file(s) using 526.00 MiB of space
+Total space used: 1023.85 MiB
+```
+
+
+### Run/Interacting with the Container
 
 There are 3 ways for running/interacting with the container:
 
@@ -313,8 +340,27 @@ For example, we can run the same command above:
 singularity exec gcc_15.2.0.sif cat /etc/os-release
 ```
 
-3. **Run the default command**
+3. **Run the default action**
+
+```console
+singularity run gcc_15.2.0.sif
+```
+
+If the default action is not specified in the recipe file, the default is to open a shell (same of the `shell` command). Alternatively, you can pass a command to execute (same of the `exec` command). You can check the default action by running the command:
+
+```console
+singularity inspect -r gcc_15.2.0.sif
+```
+
+> **Trick:** It is possible to change the default prompt `Singularity>` by setting the environment variable `SINGULARITYENV_PS1`.
 
 
+### Environment Variables
 
+Check the exported host environment variables:
 
+```console
+singularity run gcc_15.2.0.sif env
+```
+
+Those variables can conflict with the container execution. 
