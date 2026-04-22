@@ -13,8 +13,7 @@ Replace `<username>` with your LUMI username.
 ssh <username>@lumi.csc.fi
 ```
 Output:
-```
-groups
+```text
  *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
                                                        *      *  *    
    * ████       ████   ████   █████▄    ▄█████   ████     *     *     
@@ -40,21 +39,12 @@ groups
 groups
 ```
 Output example:
-```
+```test
 pepr_alfiolaz project_465000454 project_465002727 project_465002906
 ```
 Make sure you are part of the project `project_465002906`.
 
 
-## Connect to LUMI
-
-### Check project
-
-``` console
-groups
-```
-
-### 
 
 
 # Check Singularity version
