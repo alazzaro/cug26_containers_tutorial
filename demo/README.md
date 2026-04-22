@@ -202,12 +202,31 @@ it will show the help specific for the build command.
 Official documentation is available on the Singularity [webpage](https://sylabs.io/docs/).
 
 
-### Use-case Example
+### Singularity Cache Directory
 
-- {+ addition 1 +}
-- [+ addition 2 +]
-- {- deletion 3 -}
-- [- deletion 4 -]
+Set to the flash directory:
+
+```console
+export SINGULARITY_CACHEDIR=/flash/project_465002906/$USER/.singularity
+```
+
+We can add these two lines to the `lumi_g.sh` script.
+
+Commands to manage the cache are:
+
+```console
+singularity cache clean
+singularity cache list
+```
+
+
+### How to Pull an Image from DockerHub
+
+> **_Example:_** We want to test a recent GNU compiler version.
+
+
+
+
 
 
 
