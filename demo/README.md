@@ -135,11 +135,18 @@ singularity-ce version 4.1.3-150500.10.7
 /usr/bin/singularity
 ```
 
-Use `--help` flag to check the list of Singularity commands and flags. 
+## Basic Singularity Commands: Use Pre-built Images
+
+Use `--help` flag to check the list of Singularity commands and flags:
+```console
+singularity --help
+```
+
 Commands are also available via autocompletion via the tab key:
 ```text
 singularity <press tab key twice>
 ```
+
 Output example:
 ```text
 build       config      inspect     keyserver   plugin      registry    run-help    sif         verify      
@@ -147,4 +154,5 @@ cache       delete      instance    oci         pull        remote      search  
 capability  exec        key         overlay     push        run         shell       test    
 ```
 
+Further help per each command via `--help` flag, e.g. singularity build --help
 
