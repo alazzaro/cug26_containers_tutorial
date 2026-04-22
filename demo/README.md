@@ -3,6 +3,21 @@
 
 For convenience, you can copy&paste the commands on your terminal on LUMI.
 
+## Table of Contents
+
+- [Demo Commands](#demo-commands)
+  - [LUMI](#lumi)
+    - [Access](#access)
+    - [Check your projects](#check-your-projects)
+    - [Directories](#directories)
+    - [Environment setup](#environment-setup)
+    - [Modules](#modules)
+    - [Check Singularity version](#check-singularity-version)
+  - [Basic Singularity Commands: Use Pre-built Images](#basic-singularity-commands-use-pre-built-images)
+    - [How to get help](#how-to-get-help)
+    - [Use-case Example](#use-case-example)
+
+
 ## LUMI
 
 ### Access
@@ -161,9 +176,11 @@ Further help per each command via `--help` flag after the command, e.g.
 singularity build --help
 ```
 it will show the help specific for the build command.
+
 Official documentation is available on the Singularity [webpage](https://sylabs.io/docs/).
 
 ### Use-case Example
+
 
 
 
