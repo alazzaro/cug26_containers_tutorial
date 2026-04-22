@@ -75,7 +75,19 @@ Project             |                    CPU (used/allocated)|               GPU
 project_465002906   |              0/1000   (0.0%) core/hours|           0/300   (0.0%) gpu/hours|             0/10   (0.0%) TB/hours
 ```
 
+### Directories
 
+There are 4 main areas on LUMI (all based on the LUSTRE filesystem):
+* Home
+* Project: `/project/project_465002906`
+* Scratch: `/scratch/project_465002906`
+* Flash: `/flash/project_465002906`
+
+The project area is for sharing data. We will use scratch and flash areas. We can create our user directories:
+```console
+mkdir /scratch/project_465002906/$USER
+mkdir /flash/project_465002906/$USER
+```
 
 
 # Check Singularity version
