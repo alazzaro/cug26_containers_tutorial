@@ -13,7 +13,7 @@ Replace `<username>` with your LUMI username.
 ssh <username>@lumi.csc.fi
 ```
 Output:
-```none
+```
 groups
  *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
                                                        *      *  *    
