@@ -220,12 +220,100 @@ singularity cache list
 ```
 
 
-### How to Pull an Image from DockerHub
+### How to Pull an Image from DockerHub and Inspect it
 
 > **_Example:_** We want to test a recent GNU compiler version.
 
+```console
+cd /scratch/project_465002906/$USER
+singularity pull docker://gcc:15.2.0
+```
+
+Output example:
+
+```text
+INFO:    Converting OCI blobs to SIF format
+INFO:    Starting build...
+INFO:    Fetching OCI image...
+225.1MiB / 225.1MiB [============================================================================================================] 100 % 35.6 MiB/s 0s
+64.6MiB / 64.6MiB [==============================================================================================================] 100 % 35.6 MiB/s 0s
+24.4MiB / 24.4MiB [==============================================================================================================] 100 % 35.6 MiB/s 0s
+4.4MiB / 4.4MiB [================================================================================================================] 100 % 35.6 MiB/s 0s
+47.0MiB / 47.0MiB [==============================================================================================================] 100 % 35.6 MiB/s 0s
+160.4MiB / 160.4MiB [============================================================================================================] 100 % 35.6 MiB/s 0s
+INFO:    Extracting OCI image...
+INFO:    Inserting Singularity configuration...
+INFO:    Creating SIF file...
+```
+
+Check the size of the image:
+
+```console
+du -sh gcc_15.2.0.sif
+```
+
+Output example:
+
+```text
+497M	gcc_15.2.0.sif
+```
+
+You can use the Singularity `inspect` command to check the image recipe file.
+See `singularity inspect --help` for more info.
 
 
+### Run the Container
+
+There are 3 ways for running/interacting with the container:
+
+1. **Open a shell**
+
+```console
+singularity shell gcc_15.2.0.sif 
+```
+
+It will open a shell within the container. Output example:
+
+```text
+Singularity> 
+```
+
+For example, we can check the OS version:
+
+```console
+cat /etc/os-release 
+```
+
+Output example:
+
+```text
+PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+NAME="Debian GNU/Linux"
+VERSION_ID="13"
+VERSION="13 (trixie)"
+VERSION_CODENAME=trixie
+DEBIAN_VERSION_FULL=13.4
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+```
+
+This is different from the host OS (you can execute the same command on the host that reports SLES 15.6).
+
+2. **Execute a command**
+
+```console
+singularity exec gcc_15.2.0.sif <command>
+```
+
+For example, we can run the same command above:
+
+```console
+singularity exec gcc_15.2.0.sif cat /etc/os-release
+```
+
+3. **Run the default command**
 
 
 
