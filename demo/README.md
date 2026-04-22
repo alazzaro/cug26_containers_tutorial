@@ -10,9 +10,11 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
 Replace `<username>` with your LUMI username.
 
 ```console
-$ ssh <username>@lumi.csc.fi
+ssh <username>@lumi.csc.fi
 ```
-```
+Output:
+```none
+groups
  *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
                                                        *      *  *    
    * ████       ████   ████   █████▄    ▄█████   ████     *     *     
@@ -34,11 +36,14 @@ $ ssh <username>@lumi.csc.fi
 
 ### Check your projects
 
-``` console
+```console
 groups
 ```
 Output example:
-
+```
+pepr_alfiolaz project_465000454 project_465002727 project_465002906
+```
+Make sure you are part of the project `project_465002906`.
 
 
 ## Connect to LUMI
