@@ -1,4 +1,3 @@
-
 # Demo Commands
 
 For convenience, you can copy&paste the commands on your terminal on LUMI.
@@ -27,7 +26,9 @@ Replace `<username>` with your LUMI username.
 ```console
 ssh <username>@lumi.csc.fi
 ```
+
 Output:
+
 ```text
  *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
                                                        *      *  *    
@@ -53,17 +54,23 @@ Output:
 ```console
 groups
 ```
+
 Output example:
+
 ```text
 pepr_alfiolaz project_465000454 project_465002727 project_465002906
 ```
+
 Make sure you are part of the project `project_465002906`.
 
 Another way to check projects with the corresponding compute and storage usage is to use the `lumi-workspaces` command.
+
 ```console
 lumi-workspaces
 ```
+
 Output example:
+
 ```text
 Quota for your projects:
 
@@ -90,6 +97,7 @@ Project             |                    CPU (used/allocated)|               GPU
 project_465002906   |              0/1000   (0.0%) core/hours|           0/300   (0.0%) gpu/hours|             0/10   (0.0%) TB/hours
 ```
 
+
 ### Directories
 
 There are 4 main areas on LUMI (all based on the LUSTRE filesystem):
@@ -99,25 +107,30 @@ There are 4 main areas on LUMI (all based on the LUSTRE filesystem):
 * Flash: `/flash/project_465002906`
 
 The project area is for sharing data. We will use scratch and flash areas. We can create our user directories:
+
 ```console
 mkdir /scratch/project_465002906/$USER
 mkdir /flash/project_465002906/$USER
 ```
 
+
 ### Environment setup
 
 For convenience, we provide a script to setup your environment for SLURM (project, partition, and reservation):
+
 ```console
 cp /project/project_465002906/setup/lumi_g.sh /scratch/project_465002906/$USER
 cd /scratch/project_465002906/$USER
 source lumi_g.sh
 ```
+
 It will change the prompt:
 
 ```text
 INFO: Use reservation cug_tutorial
 LUMI_G-RES [15:32:41] alfiolaz@uan02:/scratch/project_465002906/alfiolaz >
 ```
+
 The reservation is only available during the tutorial, otherwise you will get the following output:
 
 ```text
@@ -125,8 +138,11 @@ INFO: No SLURM reservation is used
 LUMI_G [15:32:41] alfiolaz@uan02:/scratch/project_465002906/alfiolaz >
 ```
 
+
 ### Modules
+
 Enable the `PrgEnv-gnu` and `rocm` modules:
+
 ```console
 module load PrgEnv-gnu
 module load rocm
@@ -145,6 +161,7 @@ which singularity
 ```
 
 Output example:
+
 ```text
 singularity-ce version 4.1.3-150500.10.7
 /usr/bin/singularity
@@ -155,16 +172,19 @@ singularity-ce version 4.1.3-150500.10.7
 ### How to get help
 
 Use `--help` flag to check the list of Singularity commands and flags:
+
 ```console
 singularity --help
 ```
 
 Commands are also available via autocompletion via the tab key:
+
 ```text
 singularity <press tab key twice>
 ```
 
 Output example:
+
 ```text
 build       config      inspect     keyserver   plugin      registry    run-help    sif         verify      
 cache       delete      instance    oci         pull        remote      search      sign        version     
@@ -172,15 +192,22 @@ capability  exec        key         overlay     push        run         shell   
 ```
 
 Further help per each command via `--help` flag after the command, e.g. 
+
 ```console
 singularity build --help
 ```
+
 it will show the help specific for the build command.
 
 Official documentation is available on the Singularity [webpage](https://sylabs.io/docs/).
 
+
 ### Use-case Example
 
+- {+ addition 1 +}
+- [+ addition 2 +]
+- {- deletion 3 -}
+- [- deletion 4 -]
 
 
 
