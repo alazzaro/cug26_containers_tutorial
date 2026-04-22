@@ -328,6 +328,9 @@ BUG_REPORT_URL="https://bugs.debian.org/"
 
 This is different from the host OS (you can execute the same command on the host that reports SLES 15.6).
 
+Exit the shell by typing `exit` or hitting `Ctrl-D`.
+
+
 2. **Execute a command**
 
 ```console
@@ -399,7 +402,7 @@ singularity run --cleanenv gcc_15.2.0.sif echo \${GCC_VERSION}
 or
 
 ```console
-singularity run --cleanenv gcc_15.2.0.sif sh -c 'echo ${GCC_VERSION}'
+singularity run --cleanenv gcc_15.2.0.sif bash -c 'echo ${GCC_VERSION}'
 ```
 
 Output example:
@@ -413,11 +416,29 @@ Output example:
 
 There are 3 ways:
 
-1. Pre-append the `SINGULARITYENV_<variable name>`, e.g.:
+1. Setting the `SINGULARITYENV_<variable name>` environment variable on the host, e.g.:
 
 ```console
 export SINGULARITYENV_MYFOO="foo"
 singularity run --cleanenv gcc_15.2.0.sif echo \${MYFOO}
 ```
+
+Special case is the `PATH` variable for which there are two more possbilities: `SINGULARITYENV_APPEND_PATH` and `SINGULARITYENV_PREPEND_PATH`, e.g.
+
+```console
+singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
+export SINGULARITYENV_PREPEND_PATH=$PWD
+singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
+```
+
+Output example:
+
+```text
+/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+/scratch/project_465002906/alfiolaz:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+```
+
+
+
 
 2. 
