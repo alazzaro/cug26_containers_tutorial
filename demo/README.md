@@ -289,6 +289,39 @@ Total space used: 1023.85 MiB
 ```
 
 
+### Sandbox Image
+
+Build the sandbox image from a SIF one:
+
+```console
+singularity build --sandbox gcc_15.2.0.imgdir gcc_15.2.0.sif
+```
+
+Output example:
+
+```text
+INFO:    Starting build...
+INFO:    Verifying bootstrap image gcc_15.2.0.sif
+WARNING: integrity: signature not found for object group 1
+WARNING: Bootstrap image could not be verified, but build will continue.
+INFO:    Creating sandbox directory...
+INFO:    Build complete: gcc_15.2.0.imgdir
+```
+
+We can inspect the created directory:
+
+```console
+cd gcc_15.2.0.imgdir
+ls
+```
+
+Output example:
+
+```text
+bin  boot  dev  environment  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  singularity  srv  sys  tmp  usr  var
+```
+
+
 ### Run/Interacting with the Container
 
 There are 3 ways for running/interacting with the container:
@@ -355,7 +388,7 @@ If the default action is not specified in the recipe file, the default is to ope
 singularity inspect -r gcc_15.2.0.sif
 ```
 
-> **Trick:** It is possible to change the default prompt `Singularity>` by setting the environment variable `SINGULARITYENV_PS1`.
+> **Tip:** It is possible to change the default prompt `Singularity>` by setting the environment variable `SINGULARITYENV_PS1`.
 
 
 ### Host Environment Variables
