@@ -355,7 +355,7 @@ singularity inspect -r gcc_15.2.0.sif
 > **Trick:** It is possible to change the default prompt `Singularity>` by setting the environment variable `SINGULARITYENV_PS1`.
 
 
-### Environment Variables
+### Host Environment Variables
 
 Check the exported host environment variables:
 
@@ -363,4 +363,61 @@ Check the exported host environment variables:
 singularity run gcc_15.2.0.sif env
 ```
 
-Those variables can conflict with the container execution. 
+Isolate the container from the host environment:
+
+```console
+singularity run --cleanenv gcc_15.2.0.sif env
+```
+
+Output example:
+
+```text
+GCC_MIRRORS=https://ftpmirror.gnu.org/gcc \t\thttps://mirrors.kernel.org/gnu/gcc \t\thttps://bigsearcher.com/mirrors/gcc/releases \t\thttp://www.netgull.com/gcc/releases \t\thttps://ftpmirror.gnu.org/gcc \t\thttps://sourceware.org/pub/gcc/releases \t\tftp://ftp.gnu.org/gnu/gcc
+GCC_VERSION=15.2.0
+GPG_KEYS=B215C1633BCA0477615F1B35A5B3A004745C015A \tB3C42148A44E6983B3E4CC0793FA9B1AB75C61B8 \t90AA470469D3965A87A5DCB494D03953902C9419 \t80F98B2E0DAB6C8281BDF541A7C8C3B2F71EDF1C \t7F74F97C103468EE5D750B583AB00996FC26A641 \t33C235A34C46AA3FFB293709A328C3A2C3C45C06 \tD3A93CAD751C2AF4F8C7AD516C35B99309B5FA62
+HOME=/users/alfiolaz
+LANG=C
+LD_LIBRARY_PATH=/.singularity.d/libs
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+PROMPT_COMMAND=PS1="Singularity> "; unset PROMPT_COMMAND
+PS1=Singularity> 
+PWD=/scratch/project_465002906/alfiolaz
+SINGULARITY_BIND=
+SINGULARITY_COMMAND=run
+SINGULARITY_CONTAINER=/scratch/project_465002906/alfiolaz/gcc_15.2.0.sif
+SINGULARITY_ENVIRONMENT=/.singularity.d/env/91-environment.sh
+SINGULARITY_NAME=gcc_15.2.0.sif
+TERM=xterm-256color
+```
+
+Escape variables on the command line if you want to check their value within the container, e.g.
+
+```console
+singularity run --cleanenv gcc_15.2.0.sif echo \${GCC_VERSION}
+```
+
+or
+
+```console
+singularity run --cleanenv gcc_15.2.0.sif sh -c 'echo ${GCC_VERSION}'
+```
+
+Output example:
+
+```text
+15.2.0
+```
+
+
+### Export Selected Host Environment Variables
+
+There are 3 ways:
+
+1. Pre-append the `SINGULARITYENV_<variable name>`, e.g.:
+
+```console
+export SINGULARITYENV_MYFOO="foo"
+singularity run --cleanenv gcc_15.2.0.sif echo \${MYFOO}
+```
+
+2. 
