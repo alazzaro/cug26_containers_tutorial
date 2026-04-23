@@ -35,22 +35,22 @@ ssh <username>@lumi.csc.fi
 Output:
 
 ```text
- *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *  
-                                                       *      *  *    
-   * ████       ████   ████   █████▄    ▄█████   ████     *     *     
- *   ████       ████   ████   ████ █▄  ▄█ ████   ████         ,    *, 
-     ████       ████   ████   ████  ████  ████   ████  *   *  |\_ _/| 
-     ████       ████   ████   ████   ▀▀   ████   ████   *    .| ." ,| 
-  *  ████       ████   ████   ████        ████   ████        /(  \_\) 
-     ████       ████   ████   ████        ████   ████       /    ,-,| 
- *   ████▄▄▄▄▄  ▀███   ███▀   ████        ████   ████ *    * /      \ 
-     █████████    ▀▀███▀▀     ████        ████   ████  * ,/  (      * 
- *                                                     ,/       |  /  
-  * ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒/    \  * || |  
-                 *              *               ,_   (       )| || |  
-*   *    *    The Supercomputer of the North  * | `\_|   __ /_| || |  
-        **               *            * *       \_____\______)\__)__) 
-   .********----------*******-------******----------****************. 
+ *  ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒  *   *      *
+                                                       *      *  *
+   * ████       ████   ████   █████▄    ▄█████   ████     *     *
+ *   ████       ████   ████   ████ █▄  ▄█ ████   ████         ,    *,
+     ████       ████   ████   ████  ████  ████   ████  *   *  |\_ _/|
+     ████       ████   ████   ████   ▀▀   ████   ████   *    .| ." ,|
+  *  ████       ████   ████   ████        ████   ████        /(  \_\)
+     ████       ████   ████   ████        ████   ████       /    ,-,|
+ *   ████▄▄▄▄▄  ▀███   ███▀   ████        ████   ████ *    * /      \
+     █████████    ▀▀███▀▀     ████        ████   ████  * ,/  (      *
+ *                                                     ,/       |  /
+  * ▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒/    \  * || |
+                 *              *               ,_   (       )| || |
+*   *    *    The Supercomputer of the North  * | `\_|   __ /_| || |
+        **               *            * *       \_____\______)\__)__)
+   .********----------*******-------******----------****************.
 ```
 
 
@@ -191,12 +191,12 @@ singularity <press tab key twice>
 Output example:
 
 ```text
-build       config      inspect     keyserver   plugin      registry    run-help    sif         verify      
-cache       delete      instance    oci         pull        remote      search      sign        version     
-capability  exec        key         overlay     push        run         shell       test    
+build       config      inspect     keyserver   plugin      registry    run-help    sif         verify
+cache       delete      instance    oci         pull        remote      search      sign        version
+capability  exec        key         overlay     push        run         shell       test
 ```
 
-Further help per each command via `--help` flag after the command, e.g. 
+Further help per each command via `--help` flag after the command, e.g.
 
 ```console
 singularity build --help
@@ -341,19 +341,19 @@ There are 3 ways for running/interacting with the container:
 1. **Open a shell**
 
 ```console
-singularity shell gcc_15.2.0.sif 
+singularity shell gcc_15.2.0.sif
 ```
 
 It will open a shell within the container. Output example:
 
 ```text
-Singularity> 
+Singularity>
 ```
 
 For example, we can check the OS version:
 
 ```console
-cat /etc/os-release 
+cat /etc/os-release
 ```
 
 Output example:
@@ -428,7 +428,7 @@ LANG=C
 LD_LIBRARY_PATH=/.singularity.d/libs
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 PROMPT_COMMAND=PS1="Singularity> "; unset PROMPT_COMMAND
-PS1=Singularity> 
+PS1=Singularity>
 PWD=/scratch/project_465002906/alfiolaz
 SINGULARITY_BIND=
 SINGULARITY_COMMAND=run
@@ -574,6 +574,18 @@ We are missing the output of the `ls` of the container!
 The reason is that `/scratch` is a symlink:
 
 ```console
-
+ls -l /scratch/project_465002906
 ```
 
+Output example:
+
+```text
+lrwxrwxrwx 1 root root 39 Apr 14 17:12 /scratch/project_465002906 -> /pfs/lustrep3/scratch/project_465002906
+```
+
+It is the same for `/project/project_465002906` and `/flash/project_465002906`, they are all pointing to `/pfs`. We will see in the next section how we can properly bind these directories.
+
+
+### Binding Host Directories
+
+alfio
