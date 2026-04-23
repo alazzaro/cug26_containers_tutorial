@@ -758,8 +758,7 @@ From: ubuntu:24.04
     mpitest.c /container/test_mpi/
 
 	
-%post -c /bin/bash 
-	
+%post -c /bin/bash
 	apt-get update && apt-get -y upgrade --no-install-recommends 
 	apt-get -y install --no-install-recommends \
 	  	    build-essential wget file ca-certificates \ 
@@ -780,18 +779,22 @@ From: ubuntu:24.04
 	 sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure 
 	 FFLAGS='-fallow-argument-mismatch' \
 	   ./configure --prefix=${INSTALL_DIR}/mpi --disable-static \
-	              --disable-rpath--disable-wrapper-rpath \
-	              --enable-fast=all,O3--with-device=ch3 \
+	              --disable-rpath --disable-wrapper-rpath \
+	              --enable-fast=all,O3 --with-device=ch3 \
 	              --mandir=/usr/share/man > /dev/null 
 	  make -j$(getconf _NPROCESSORS_ONLN) install > /dev/null 
-	  popd && rm-rf mpich-${VER} 
+	  popd && rm-rf mpich-${VER}
 	  echo "export PATH=${INSTALL_DIR}/mpi/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT} 
 	  echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${INSTALL_DIR}/mpi/lib" >> ${SINGULARITY_ENVIRONMENT}
 
 EOF
 ```
 
+* Build the image:
 
+```console
+singularity build mpich.sif mpich.def
+```
 
 
 
