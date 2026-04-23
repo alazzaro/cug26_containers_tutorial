@@ -749,16 +749,16 @@ EOF
 
 * Recipe, install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x):
 
-	```console
-	cat << EOF > mpich.def
-	Bootstrap: docker
-	From: ubuntu:24.04
+```console
+cat << EOF > mpich.def
+Bootstrap: docker
+From: ubuntu:24.04
 	
-	%files
+%files
     mpitest.c /container/test_mpi/
 
 	
-	%post -c /bin/bash 
+%post -c /bin/bash 
 	
 	apt-get update && apt-get -y upgrade --no-install-recommends 
 	apt-get -y install --no-install-recommends \
@@ -787,8 +787,9 @@ EOF
 	  popd && rm-rf mpich-${VER} 
 	  echo "export PATH=${INSTALL_DIR}/mpi/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT} 
 	  echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${INSTALL_DIR}/mpi/lib" >> ${SINGULARITY_ENVIRONMENT}
-	EOF
-	```
+
+EOF
+```
 
 
 
