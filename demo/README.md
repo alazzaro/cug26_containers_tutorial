@@ -724,33 +724,32 @@ We can add the path to PROOT in the `lumi_g.sh` script.
 
 * MPI test case:
 
-	```console
-	cat << EOF > mpitest.c
+```console
+cat << EOF > mpitest.c
 
+#include <mpi.h>
+#include <stdio.h>
 
-	#include <mpi.h>
-	#include <stdio.h>
-
-	int main( int argc, char *argv[])
-	{
-	  int myrank = -1, nranks = -1, len = 0;
-	  char version[MPI_MAX_LIBRARY_VERSION_STRING];
-	  MPI_Init(&argc,&argv);
-	  MPI_Comm_rank(MPI_COMM_WORLD, &myrank); MPI_Comm_size(MPI_COMM_WORLD, &nranks);
-	  if (myrank == 0) {
+int main( int argc, char *argv[])
+{
+	int myrank = -1, nranks = -1, len = 0;
+	char version[MPI_MAX_LIBRARY_VERSION_STRING];
+	MPI_Init(&argc,&argv);
+	MPI_Comm_rank(MPI_COMM_WORLD, &myrank); MPI_Comm_size(MPI_COMM_WORLD, &nranks);
+	if (myrank == 0) {
 	    printf("%d\n", nranks);
 	    MPI_Get_library_version(version, &len);
 	    printf("%s\n", version);
-	  }
-	  MPI_Finalize();
-	  return 0;
 	}
-	EOF
-	```
+	MPI_Finalize();
+	return 0;
+}
+EOF
+```
 
 * Recipe, install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x):
 
-	```bash
+	```console
 	cat << EOF > mpich.def
 	Bootstrap: docker
 	From: ubuntu:24.04
