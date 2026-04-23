@@ -525,7 +525,24 @@ singularity run --cleanenv --env MY_IMAGE_VAR="foo" gcc_15.2.0.sif echo \${MY_IM
 Output example:
 
 ```text
-
+foo
 ```
 
+3. Setting `--env-file` option, e.g.:
+
+
+```console
+echo "MY_IMAGE_VAR1=\"A\"" > myenvs
+echo "MY_IMAGE_VAR2=\"B\"" >> myenvs
+singularity run --cleanenv --env-file myenvs gcc_15.2.0.sif echo \${MY_IMAGE_VAR1}
+```
+
+Output example:
+
+```text
+A
+```
+
+
+### Exported Host Directories
 
