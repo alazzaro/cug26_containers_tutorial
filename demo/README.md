@@ -14,7 +14,12 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [Check Singularity version](#check-singularity-version)
   - [Basic Singularity Commands: Use Pre-built Images](#basic-singularity-commands-use-pre-built-images)
     - [How to get help](#how-to-get-help)
-    - [Use-case Example](#use-case-example)
+    - [Singularity Cache Directory](#singularity-cache-directory)
+    - [How to Pull an Image from DockerHub and Inspect it](#how-to-pull-an-image-from-dockerhub-and-inspect-it)
+    - [Sandbox Image](#sandbox-image)
+    - [Run/Interacting with the Container](#runinteracting-with-the-container)
+    - [Host Environment Variables](#host-environment-variables)
+    - [Export Selected Host Environment Variables](#export-selected-host-environment-variables)
 
 
 ## LUMI
@@ -319,6 +324,12 @@ Output example:
 
 ```text
 bin  boot  dev  environment  etc  home  lib  lib64  media  mnt  opt  proc  root  run  sbin  singularity  srv  sys  tmp  usr  var
+```
+
+Run the sandbox, just like the SIF image, e.g.:
+
+```console
+singularity run gcc_15.2.0.imgdir
 ```
 
 
