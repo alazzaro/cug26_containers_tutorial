@@ -22,6 +22,7 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [Export Selected Host Environment Variables](#export-selected-host-environment-variables)
     - [Exported Host Directories](#exported-host-directories)
     - [Binding Host Directories](#binding-host-directories)
+    - [Binding Host Files](#binding-host-files)
 
 
 ## LUMI
@@ -587,7 +588,7 @@ Common list of user directories:
 
 ### Binding Host Directories
 
-The are 2 ways:
+There are 2 ways:
 
 1. Setting `SINGULARITY_BIND=src[:dest[:opts]]`, where
 
@@ -595,8 +596,147 @@ The are 2 ways:
 	* `dest` is the optional mounting point within the container. If `dest` is not given, it is set equal to `src`
 	* `opts` may be specified as `ro` (read-only) or `rw` (read/write, which is the default).
 
+	```console
+	echo $PWD ; ls # Host directory
+	export SINGULARITY_BIND="/pfs,/scratch,/project,/flash"
+	singularity run --cleanenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
+	```
+
+	Output example:
+
+	```text
+	/scratch/project_465002906/alfiolaz
+	gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
+	/pfs/lustrep3/scratch/project_465002906/alfiolaz
+	gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
+	```
+	
+	We can add `SINGULARITY_BIND` to the `lumi_g.sh` script.
+
+2. Setting the `-B src[:dest[:opts]]` option (`src`, `dest`, `opts` as in case 1).
+
+	```console
+	singularity run --cleanenv -B /pfs,/scratch,/project,/flash gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
+	```
 
 
-2.
+### Binding Host Files
+
+Same procedure used for directories. The entire path to the file will be added, only the specific files will be mounted, e.g.:
+
+```console
+echo $PWD ; ls # Host directory
+singularity run --cleanenv -B $PWD/myenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
+```
+
+Output example:
+
+```text
+/scratch/project_465002906/alfiolaz
+gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
+/scratch/project_465002906/alfiolaz
+myenvs
+```
+
+### Build and Run Interactively an Application
+
+Let's build an `helloworld` example:
+
+```console
+cat << EOF > helloworld.cxx
+#include <iostream> 
+int main() 
+{ 
+  std::cout << "Hello World!" << std::endl;
+  return 0; 
+}
+EOF
+singularity run --cleanenv gcc_15.2.0.sif
+g++ helloworld.cxx -o helloworld.x
+exit
+singularity run --cleanenv gcc_15.2.0.sif ./helloworld.x
+```
+
+Output example:
+
+```text
+Hello World!
+```
+
+## Images Building
+
+### Writeable Sandbox Image
+
+```console
+SINGULARITY_BIND="" singularity run --cleanenv --writable --home $PWD:/home gcc_15.2.0.imgdir
+mkdir -p /opt/myapp
+cp helloworld.x /opt/myapp
+chmod -R u=rwX,go=rX /opt/myapp
+exit
+singularity build gcc_15.2.0_myapp.sif gcc_15.2.0.imgdir
+singularity run --cleanenv gcc_15.2.0_myapp.sif /opt/myapp/helloworld.x
+```
+
+Output example:
+
+```text
+INFO:    Starting build...
+INFO:    Creating SIF file...
+INFO:    Build complete: gcc_15.2.0_myapp.sif
+Hello World!
+```
+
+### Installing PROOT
+
+```console
+mkdir proot_install
+pushd proot_install
+curl -LO https://proot.gitlab.io/proot/bin/proot
+export PATH=$PWD:$PATH
+popd
+proot --version
+```
+
+We can add the path to PROOT in the `lumi_g.sh` script.
+
+
+### Definition File
+
+* Test case:
+
+	```console
+	cat << EOF > mpitest.c
+
+
+	#include <mpi.h>
+	#include <stdio.h>
+
+	int main( int argc, char *argv[])
+	{
+	  int myrank = -1, nranks = -1, len = 0;
+	  char version[MPI_MAX_LIBRARY_VERSION_STRING];
+	  MPI_Init(&argc,&argv);
+	  MPI_Comm_rank(MPI_COMM_WORLD, &myrank); MPI_Comm_size(MPI_COMM_WORLD, &nranks);
+	  if (myrank == 0) {
+	    printf("%d\n", nranks);
+	    MPI_Get_library_version(version, &len);
+	    printf("%s\n", version);
+	  }
+	  MPI_Finalize();
+	  return 0;
+	}
+	EOF
+	```
+
+* Recipe:
+
+	```console
+	
+	```
+
+
+
+
+
 
 
