@@ -546,3 +546,34 @@ A
 
 ### Exported Host Directories
 
+Common list of user directories:
+
+* The user’s home directory (`$HOME`)
+
+```console
+ls ~
+singularity run --cleanenv gcc_15.2.0.sif ls ~
+```
+
+* The current working directory, *unless its path contains symlinks resolving to different locations on the host vs inside the container*
+
+```console
+echo $PWD ; ls # Host directory
+singularity run --cleanenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
+```
+
+Output example:
+
+```text
+/scratch/project_465002906/alfiolaz
+gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
+/scratch/project_465002906/alfiolaz
+```
+
+We are missing the output of the `ls` of the container!
+The reason is that `/scratch` is a symlink:
+
+```console
+
+```
+
