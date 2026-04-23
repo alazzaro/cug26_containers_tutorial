@@ -342,65 +342,65 @@ There are 3 ways for running/interacting with the container:
 
 1. **Open a shell**
 
-```console
-singularity shell gcc_15.2.0.sif
-```
+	```console
+	singularity shell gcc_15.2.0.sif
+	```
 
-It will open a shell within the container. Output example:
+	It will open a shell within the container. Output example:
 
-```text
-Singularity>
-```
+	```text
+	Singularity>
+	```
 
-For example, we can check the OS version:
+	For example, we can check the OS version:
 
-```console
-cat /etc/os-release
-```
+	```console
+	cat /etc/os-release
+	```
 
-Output example:
+	Output example:
 
-```text
-PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
-NAME="Debian GNU/Linux"
-VERSION_ID="13"
-VERSION="13 (trixie)"
-VERSION_CODENAME=trixie
-DEBIAN_VERSION_FULL=13.4
-ID=debian
-HOME_URL="https://www.debian.org/"
-SUPPORT_URL="https://www.debian.org/support"
-BUG_REPORT_URL="https://bugs.debian.org/"
-```
+	```text
+	PRETTY_NAME="Debian GNU/Linux 13 (trixie)"
+	NAME="Debian GNU/Linux"
+	VERSION_ID="13"
+	VERSION="13 (trixie)"
+	VERSION_CODENAME=trixie
+	DEBIAN_VERSION_FULL=13.4
+	ID=debian
+	HOME_URL="https://www.debian.org/"
+	SUPPORT_URL="https://www.debian.org/support"
+	BUG_REPORT_URL="https://bugs.debian.org/"
+	```
 
-This is different from the host OS (you can execute the same command on the host that reports SLES 15.6).
+	This is different from the host OS (you can execute the same command on the host that reports SLES 15.6).
 
-Exit the shell by typing `exit` or hitting `Ctrl-D`.
+	Exit the shell by typing `exit` or hitting `Ctrl-D`.
 
 
 2. **Execute a command**
 
-```console
-singularity exec gcc_15.2.0.sif <command>
-```
+	```console
+	singularity exec gcc_15.2.0.sif <command>
+	```
 
-For example, we can run the same command above:
+	For example, we can run the same command above:
 
-```console
-singularity exec gcc_15.2.0.sif cat /etc/os-release
-```
+	```console
+	singularity exec gcc_15.2.0.sif cat /etc/os-release
+	```
 
 3. **Run the default action**
 
-```console
-singularity run gcc_15.2.0.sif
-```
+	```console
+	singularity run gcc_15.2.0.sif
+	```
 
-If the default action is not specified in the recipe file, the default is to open a shell (same of the `shell` command). Alternatively, you can pass a command to execute (same of the `exec` command). You can check the default action by running the command:
+	If the default action is not specified in the recipe file, the default is to open a shell (same of the `shell` command). Alternatively, you can pass a command to execute (same of the `exec` command). You can check the default action by running the command:
 
-```console
-singularity inspect -r gcc_15.2.0.sif
-```
+	```console
+	singularity inspect -r gcc_15.2.0.sif
+	```
 
 > **Tip:** It is possible to change the default prompt `Singularity>` by setting the environment variable `SINGULARITYENV_PS1`.
 
@@ -465,85 +465,82 @@ There are 3 ways:
 
 1. Setting the `SINGULARITYENV_<variable name>` environment variable on the host, e.g.:
 
-```console
-export SINGULARITYENV_MY_IMAGE_VAR="foo"
-singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
-```
+	```console
+	export SINGULARITYENV_MY_IMAGE_VAR="foo"
+	singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+	```
 
-Output example:
+	Output example:
 
-```text
-foo
-```
+	```text
+	foo
+	```
 
+	Special case is the `PATH` variable for which there are two more possbilities: `SINGULARITYENV_APPEND_PATH` and `SINGULARITYENV_PREPEND_PATH`, e.g.
 
-Special case is the `PATH` variable for which there are two more possbilities: `SINGULARITYENV_APPEND_PATH` and `SINGULARITYENV_PREPEND_PATH`, e.g.
+	```console
+	singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
+	export SINGULARITYENV_PREPEND_PATH="$PWD"
+	singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
+	```
 
-```console
-singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
-export SINGULARITYENV_PREPEND_PATH="$PWD"
-singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
-```
+	Output example:
 
-Output example:
+	```text
+	/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	/scratch/project_465002906/alfiolaz:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	```
 
-```text
-/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-/scratch/project_465002906/alfiolaz:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-```
+	**Example: prepend to `LD_LIBRARY_PATH`**
 
-**Example: prepend to `LD_LIBRARY_PATH`**
+	Normally `LD_LIBRARY_PATH` automatically append the internal libraries (if correctly configured):
 
-Normally `LD_LIBRARY_PATH` automatically append the internal libraries (if correctly configured):
+	```console
+	singularity run --cleanenv gcc_15.2.0.sif echo \${LD_LIBRARY_PATH}
+	export SINGULARITYENV_LD_LIBRARY_PATH="$PWD"
+	singularity run --cleanenv gcc_15.2.0.sif echo \${LD_LIBRARY_PATH}
+	```
 
-```console
-singularity run --cleanenv gcc_15.2.0.sif echo \${LD_LIBRARY_PATH}
-export SINGULARITYENV_LD_LIBRARY_PATH="$PWD"
-singularity run --cleanenv gcc_15.2.0.sif echo \${LD_LIBRARY_PATH}
-```
+	Output example:
 
-Output example:
+	```text
+	/.singularity.d/libs
+	/scratch/project_465002906/alfiolaz:/.singularity.d/libs
+	```
 
-```text
-/.singularity.d/libs
-/scratch/project_465002906/alfiolaz:/.singularity.d/libs
-```
+	**Example: general prepend to an existing image variable**
 
-**Example: general prepend to an existing image variable**
-
-```console
-singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
-export SINGULARITYENV_MY_IMAGE_VAR="$PWD:\$MY_IMAGE_VAR"
-singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
-```
-
+	```console
+	singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+	export SINGULARITYENV_MY_IMAGE_VAR="$PWD:\$MY_IMAGE_VAR"
+	singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+	```
 
 2. Setting `--env` option, e.g.:
 
-```console
-singularity run --cleanenv --env MY_IMAGE_VAR="foo" gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
-```
+	```console
+	singularity run --cleanenv --env MY_IMAGE_VAR="foo" gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+	```
 
-Output example:
+	Output example:
 
-```text
-foo
-```
+	```text
+	foo
+	```
 
 3. Setting `--env-file` option, e.g.:
 
+	```console
+	echo "MY_IMAGE_VAR1=\"A\"" > myenvs
+	echo "MY_IMAGE_VAR2=\"B\"" >> myenvs
+	singularity run --cleanenv --env-file myenvs gcc_15.2.0.sif echo \${MY_IMAGE_VAR1}
+	```
 
-```console
-echo "MY_IMAGE_VAR1=\"A\"" > myenvs
-echo "MY_IMAGE_VAR2=\"B\"" >> myenvs
-singularity run --cleanenv --env-file myenvs gcc_15.2.0.sif echo \${MY_IMAGE_VAR1}
-```
+	Output example:
 
-Output example:
-
-```text
-A
-```
+	```text
+	A
+	```
 
 
 ### Exported Host Directories
@@ -552,42 +549,54 @@ Common list of user directories:
 
 * The user’s home directory (`$HOME`)
 
-```console
-ls ~
-singularity run --cleanenv gcc_15.2.0.sif ls ~
-```
+	```console
+	ls ~
+	singularity run --cleanenv gcc_15.2.0.sif ls ~
+	```
 
 * The current working directory, *unless its path contains symlinks resolving to different locations on the host vs inside the container*
 
-```console
-echo $PWD ; ls # Host directory
-singularity run --cleanenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
-```
+	```console
+	echo $PWD ; ls # Host directory
+	singularity run --cleanenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
+	```
 
-Output example:
+	Output example:
 
-```text
-/scratch/project_465002906/alfiolaz
-gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
-/scratch/project_465002906/alfiolaz
-```
+	```text
+	/scratch/project_465002906/alfiolaz
+	gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
+	/scratch/project_465002906/alfiolaz
+	```
 
-We are missing the output of the `ls` of the container!
-The reason is that `/scratch` is a symlink:
+	We are missing the output of the `ls` of the container!
+	The reason is that `/scratch` is a symlink:
 
-```console
-ls -l /scratch/project_465002906
-```
+	```console
+	ls -l /scratch/project_465002906
+	```
 
-Output example:
+	Output example:
 
-```text
-lrwxrwxrwx 1 root root 39 Apr 14 17:12 /scratch/project_465002906 -> /pfs/lustrep3/scratch/project_465002906
-```
+	```text
+	lrwxrwxrwx 1 root root 39 Apr 14 17:12 /scratch/project_465002906 -> /pfs/lustrep3/scratch/project_465002906
+	```
 
-It is the same for `/project/project_465002906` and `/flash/project_465002906`, they are all pointing to `/pfs`. We will see in the next section how we can properly bind these directories.
+	It is the same for `/project/project_465002906` and `/flash/project_465002906`, they are all pointing to `/pfs`. We will see in the next section how we can properly bind these directories.
 
 
 ### Binding Host Directories
 
-alfio
+The are 2 ways:
+
+1. Setting `SINGULARITY_BIND=src[:dest[:opts]]`, where
+
+	* `src` is the host directory path
+	* `dest` is the optional mounting point within the container. If `dest` is not given, it is set equal to `src`
+	* `opts` may be specified as `ro` (read-only) or `rw` (read/write, which is the default).
+
+
+
+2.
+
+
