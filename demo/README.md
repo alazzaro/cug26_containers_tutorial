@@ -318,6 +318,7 @@ We can inspect the created directory:
 ```console
 cd gcc_15.2.0.imgdir
 ls
+cd ..
 ```
 
 Output example:
@@ -463,15 +464,15 @@ There are 3 ways:
 1. Setting the `SINGULARITYENV_<variable name>` environment variable on the host, e.g.:
 
 ```console
-export SINGULARITYENV_MYFOO="foo"
-singularity run --cleanenv gcc_15.2.0.sif echo \${MYFOO}
+export SINGULARITYENV_MY_IMAGE_VAR="foo"
+singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
 ```
 
 Special case is the `PATH` variable for which there are two more possbilities: `SINGULARITYENV_APPEND_PATH` and `SINGULARITYENV_PREPEND_PATH`, e.g.
 
 ```console
 singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
-export SINGULARITYENV_PREPEND_PATH=$PWD
+export SINGULARITYENV_PREPEND_PATH="$PWD"
 singularity run --cleanenv gcc_15.2.0.sif echo \${PATH}
 ```
 
@@ -482,7 +483,42 @@ Output example:
 /scratch/project_465002906/alfiolaz:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
+**Example: prepend to `LD_LIBRARY_PATH`**
+
+Normally `LD_LIBRARY_PATH` automatically append the internal libraries (if correctly configured):
+
+```console
+singularity run --cleanenv gcc_15.2.0.sif echo \${LD_LIBRARY_PATH}
+export SINGULARITYENV_LD_LIBRARY_PATH="$PWD"
+singularity run --cleanenv gcc_15.2.0.sif echo \${LD_LIBRARY_PATH}
+```
+
+Output example:
+
+```text
+/.singularity.d/libs
+/scratch/project_465002906/alfiolaz:/.singularity.d/libs
+```
+
+**Example: general prepend to an existing image variable**
+
+```console
+singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+export SINGULARITYENV_MY_IMAGE_VAR="$PWD:\$MY_IMAGE_VAR"
+singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+```
 
 
+2. Setting `--env` option, e.g.:
 
-2. 
+```console
+singularity run --cleanenv --env MY_IMAGE_VAR="foo" gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
+```
+
+Output example:
+
+```text
+
+```
+
+
