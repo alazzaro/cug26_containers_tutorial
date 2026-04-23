@@ -20,6 +20,8 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [Run/Interacting with the Container](#runinteracting-with-the-container)
     - [Host Environment Variables](#host-environment-variables)
     - [Export Selected Host Environment Variables](#export-selected-host-environment-variables)
+    - [Exported Host Directories](#exported-host-directories)
+    - [Binding Host Directories](#binding-host-directories)
 
 
 ## LUMI
