@@ -23,6 +23,11 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [Exported Host Directories](#exported-host-directories)
     - [Binding Host Directories](#binding-host-directories)
     - [Binding Host Files](#binding-host-files)
+    - [Build and Run Interactively an Application](#build-and-run-interactively-an-application)
+  - [Images Building](#images-building)
+    - [Writeable Sandbox Image](#writeable-sandbox-image)
+    - [Installing PROOT](#installing-proot)
+    - [Definition File](#definition-file)
 
 
 ## LUMI
@@ -692,9 +697,24 @@ Hello World!
 mkdir proot_install
 pushd proot_install
 curl -LO https://proot.gitlab.io/proot/bin/proot
+chmod +x proot
 export PATH=$PWD:$PATH
 popd
 proot --version
+```
+
+Output example:
+
+```text
+ _____ _____              ___
+|  __ \  __ \_____  _____|   |_
+|   __/     /  _  \/  _  \    _|
+|__|  |__|__\_____/\_____/\____| v5.3.1-99a84175
+
+built-in accelerators: process_vm = yes, seccomp_filter = yes
+
+Visit https://proot-me.github.io for help, bug reports, suggestions, patches, ...
+Copyright (C) 2022 PRoot Developers, licensed under GPL v2 or later.
 ```
 
 We can add the path to PROOT in the `lumi_g.sh` script.
@@ -702,7 +722,7 @@ We can add the path to PROOT in the `lumi_g.sh` script.
 
 ### Definition File
 
-* Test case:
+* MPI test case:
 
 	```console
 	cat << EOF > mpitest.c
@@ -728,10 +748,47 @@ We can add the path to PROOT in the `lumi_g.sh` script.
 	EOF
 	```
 
-* Recipe:
+* Recipe, install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x):
 
-	```console
+	```bash
+	cat << EOF > mpich.def
+	Bootstrap: docker
+	From: ubuntu:24.04
 	
+	%files
+    mpitest.c /container/test_mpi/
+
+	
+	%post -c /bin/bash 
+	
+	apt-get update && apt-get -y upgrade --no-install-recommends 
+	apt-get -y install --no-install-recommends \
+	  	    build-essential wget file ca-certificates \ 
+	 	    gfortran
+	  
+	 # Cleanup 
+	 apt-get autoremove -y 
+	 apt-get clean && rm -rf /var/lib/apt/lists/* 
+	 
+	 # Installation dir 
+	 export INSTALL_DIR=/container 
+	 mkdir -p ${INSTALL_DIR} 
+	 
+	 VER=3.4a2
+	 wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
+	 tar xf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz 
+	 pushd mpich-${VER} 
+	 sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure 
+	 FFLAGS='-fallow-argument-mismatch' \
+	   ./configure --prefix=${INSTALL_DIR}/mpi --disable-static \
+	              --disable-rpath--disable-wrapper-rpath \
+	              --enable-fast=all,O3--with-device=ch3 \
+	              --mandir=/usr/share/man > /dev/null 
+	  make -j$(getconf _NPROCESSORS_ONLN) install > /dev/null 
+	  popd && rm-rf mpich-${VER} 
+	  echo "export PATH=${INSTALL_DIR}/mpi/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT} 
+	  echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${INSTALL_DIR}/mpi/lib" >> ${SINGULARITY_ENVIRONMENT}
+	EOF
 	```
 
 
