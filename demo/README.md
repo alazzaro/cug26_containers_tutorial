@@ -468,6 +468,13 @@ export SINGULARITYENV_MY_IMAGE_VAR="foo"
 singularity run --cleanenv gcc_15.2.0.sif echo \${MY_IMAGE_VAR}
 ```
 
+Output example:
+
+```text
+foo
+```
+
+
 Special case is the `PATH` variable for which there are two more possbilities: `SINGULARITYENV_APPEND_PATH` and `SINGULARITYENV_PREPEND_PATH`, e.g.
 
 ```console
