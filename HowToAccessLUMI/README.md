@@ -11,7 +11,7 @@ If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1
 *Note: If you have an existing LUMI account on Puhuri, you can skip steps 7-10*
 
 1. Provide us with your name and organizational email: reach us on Slack or send us an [email](mailto:alfio.lazzaro@hpe.com).
-2. Wait until you receive an email that you have been invited to the project.
+2. Wait until you receive an email with a link to join the project.
 3. Click on the invite link, which will bring you to the Puhuri Portal (direct [link](https://puhuri-portal.neic.no/) access).
 4. Click on "Sign in with MyAccessID", e.g.
 <p align="center">
