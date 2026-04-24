@@ -864,6 +864,7 @@ FFLAGS='-fallow-argument-mismatch' \
                     --mandir=/usr/share/man
 make -j$(getconf _NPROCESSORS_ONLN) install
 popd && rm -rf mpich-${VER}
+chmod -R u=rwX,go=rX ${INSTALL_DIR}
 ```
 
 
@@ -881,14 +882,11 @@ exit
 singularity build mpich.sif lumi_base.imgdir
 ```
 
+### Build the Image with the Application
 
-### Definition File
+* **MPI test case**: Copy&paste in `mpitest.c` file.
 
-* MPI test case:
-
-```console
-cat << EOF > mpitest.c
-
+```c
 #include <mpi.h>
 #include <stdio.h>
 
@@ -906,8 +904,9 @@ int main( int argc, char *argv[])
 	MPI_Finalize();
 	return 0;
 }
-EOF
 ```
+
+
 
 * Recipe, install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x):
 
