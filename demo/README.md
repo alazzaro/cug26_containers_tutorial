@@ -785,6 +785,15 @@ if [ "{{ BIND_FILES }}" != "0" ]; then
 	    touch $var
 	 done
 fi
+
+%runscript
+
+if test $# -eq 0 || test -z "$@" ; then
+	bash -norc
+else
+	sh -c "$@"
+fi
+
 ```
 
 * **Script for building:**  Copy&paste in `lumi_base.sh` file and run `chmod +x lumi_base.sh`:
@@ -813,15 +822,6 @@ echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
 
 SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
-
-%runscript 
-
-if test $# -eq 0 || test -z "$@" ; then
-	bash -norc 
-else 
-	sh -c "$@"
-fi
-
 ```
 
 * **Build:**  run the script `./lumi_base.sh`
