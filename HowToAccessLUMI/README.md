@@ -8,7 +8,8 @@ For logistics reasons, it is **highly recommended** that you start the procedure
 
 If you need assistance, please connect to the Slack channel [#cug2026-tutorial-1b](https://crayusers.slack.com/archives/C0AU57Y2SG5) of the CUG workspace.
 
-*Note: If you have an existing LUMI account on Puhuri, you can skip steps 7-9. VERY IMPORTANT: Make sure that you accept https://my.csc.fi/terms.*
+*Note: If you have an existing LUMI account on Puhuri, you can skip steps 7-9.*
+**VERY IMPORTANT: Make sure that you accept https://my.csc.fi/terms.**
 
 1. Provide us with your name and organizational email: reach us on Slack or send us an [email](mailto:alfio.lazzaro@hpe.com).
 2. Wait until you receive an email with a link to join the project.

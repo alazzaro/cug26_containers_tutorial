@@ -720,6 +720,75 @@ Copyright (C) 2022 PRoot Developers, licensed under GPL v2 or later.
 We can add the path to PROOT in the `lumi_g.sh` script.
 
 
+### LUMI Base Image
+
+* Definition file `lumi_base.def`. Copy&paste in a new file:
+
+```bash
+Bootstrap: docker
+From: ubuntu:25.04
+
+%post -c /bin/bash
+# fake some of the commands not available with proot
+for f in /usr/sbin/group add /usr/sbin/addgroup /bin/chgrp; do
+    rm -rf $f
+    ln-s /bin/true $f
+done
+# More workarounds, based on https://github.com/opencontainers/runc/issues/2517#issuecomment-1030859646
+apt-config dump | grep Sandbox::User
+cat <<EOF > /etc/apt/apt.conf.d/sandbox-disable
+APT::Sandbox::User "root";
+EOF
+cat <<EOF>/etc/apt/apt.conf.d/99-disable-sandbox
+APT::Sandbox::User "root";
+APT::Sandbox::Verify "0";
+APT::Sandbox::Verify::IDs "0";
+APT::Sandbox::Verify::Groups "0";
+APT::Sandbox::Verify::Regain "0";
+EOF
+
+# Package installations
+apt-get update && apt-get -y upgrade --no-install-recommends
+apt-get -y install --no-install-recommends \
+	  	build-essential wget file ca-certificates \
+	 	gfortran
+	  
+# Cleanup
+apt-get autoremove -y
+apt-get clean && rm -rf /var/lib/apt/lists/*
+	 
+# Installation dir
+export INSTALL_DIR=/container
+mkdir -p ${INSTALL_DIR}
+
+# Save paths for next steps
+echo "export INSTALL_DIR=${INSTALL_DIR}" >> ${SINGULARITY_ENVIRONMENT}
+echo "export PATH=\${INSTALL_DIR}/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT}
+echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${INSTALL_DIR}/lib" >> ${SINGULARITY_ENVIRONMENT}
+```
+
+* Script to run it (`lumi_base.sh`). Copy&paste on a new file and run `chmod +x lumi_base.sh`:
+
+```bash
+export SINGULARITY_BIND_DIRS=""
+export SINGULARITY_BIND_FILES=""
+for var in ${SINGULARITY_BINDPATH//,/ }; do
+    host_container=(${var//:/ })
+    host_var=${host_container[0]}
+    container_var=${host_container[1]}
+    if [ -d "$host_var" ]; then
+        SINGULARITY_BIND_DIRS+=${container_var:-$host_var}" "
+    else
+        SINGULARITY_BIND_FILES+=${container_var:-$host_var}" "
+    fi
+
+done
+
+echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
+echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
+```
+
+
 ### Definition File
 
 * MPI test case:
