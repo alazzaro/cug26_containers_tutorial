@@ -824,21 +824,21 @@ echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
 SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
 ```
 
-* **Build:**  run the script `./lumi_base.sh`
+* **Build:**  run the script `./lumi_base.sh`. It will start the building (few minutes to complete the procedure).
 
 * **Check:** Note that we are not resetting `SINGULARITY_BIND`:
 
-```console
-singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
-echo $INSTALL_DIR
-exit
-```
+	```console
+	singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
+	echo $INSTALL_DIR
+	exit
+	```
 
-Output example:
+	Output example:
 
-```text
-/container
-```
+	```text
+	/container
+	```
 
 
 ### Definition File
