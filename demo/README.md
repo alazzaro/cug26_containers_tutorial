@@ -813,6 +813,15 @@ echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
 
 SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
+
+%runscript 
+
+if test $# -eq 0 || test -z "$@" ; then
+	bash -norc 
+else 
+	sh -c "$@"
+fi
+
 ```
 
 * **Build:**  run the script `./lumi_base.sh`
@@ -820,7 +829,7 @@ SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULA
 * **Check:** Note that we are not resetting `SINGULARITY_BIND`:
 
 ```console
-singularity run --cleanenv lumi_base.imgdir
+singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
 echo $INSTALL_DIR
 exit
 ```
