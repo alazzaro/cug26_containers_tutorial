@@ -843,7 +843,7 @@ Output example:
 
 ### Add MPICH Installation
 
-* **Installation script:** Copy&paste in `install_mpich.sh` file and run `chmod +x install_mpich.sh`:
+* **Installation script:** install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x). Copy&paste in `install_mpich.sh` file and run `chmod +x install_mpich.sh`:
 
 ```bash
 #!/usr/bin/bash
@@ -906,19 +906,20 @@ int main( int argc, char *argv[])
 }
 ```
 
-
-
-* Recipe, install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x):
+* **Recipe file:** Copy&paste in `mpitest.def` file.
 
 ```console
-cat << 'EOF' > mpich.def
-Bootstrap: docker
-From: ubuntu:24.04
+Bootstrap: localimage
+From: mpich.sif
 	
 %files
-    mpitest.c /container/test_mpi/
+mpitest.c ${INSTALL_DIR}/test_mpi/
 
-	
+
+```
+
+
+```	
 %post -c /bin/bash
 	apt-get update && apt-get -y upgrade --no-install-recommends
 	apt-get -y install --no-install-recommends \
