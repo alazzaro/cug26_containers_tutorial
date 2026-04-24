@@ -750,7 +750,7 @@ EOF
 * Recipe, install `MPICH 3.4a2`, ABI compatible with `Cray MPI` (version 8.1.x):
 
 ```console
-cat << EOF > mpich.def
+cat << 'EOF' > mpich.def
 Bootstrap: docker
 From: ubuntu:24.04
 	
@@ -759,9 +759,9 @@ From: ubuntu:24.04
 
 	
 %post -c /bin/bash
-	apt-get update && apt-get -y upgrade --no-install-recommends 
+	apt-get update && apt-get -y upgrade --no-install-recommends
 	apt-get -y install --no-install-recommends \
-	  	    build-essential wget file ca-certificates \ 
+	  	    build-essential wget file ca-certificates \
 	 	    gfortran
 	  
 	 # Cleanup 
@@ -774,17 +774,18 @@ From: ubuntu:24.04
 	 
 	 VER=3.4a2
 	 wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
-	 tar xf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz 
+	 tar xvf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz 
 	 pushd mpich-${VER} 
-	 sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure 
+	 sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure
+	 chmod +x configure
 	 FFLAGS='-fallow-argument-mismatch' \
 	   ./configure --prefix=${INSTALL_DIR}/mpi --disable-static \
 	              --disable-rpath --disable-wrapper-rpath \
 	              --enable-fast=all,O3 --with-device=ch3 \
-	              --mandir=/usr/share/man > /dev/null 
-	  make -j$(getconf _NPROCESSORS_ONLN) install > /dev/null 
-	  popd && rm-rf mpich-${VER}
-	  echo "export PATH=${INSTALL_DIR}/mpi/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT} 
+	              --mandir=/usr/share/man
+	  make -j$(getconf _NPROCESSORS_ONLN) install
+	  popd && rm -rf mpich-${VER}
+	  echo "export PATH=${INSTALL_DIR}/mpi/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT}
 	  echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${INSTALL_DIR}/mpi/lib" >> ${SINGULARITY_ENVIRONMENT}
 
 EOF
@@ -793,7 +794,7 @@ EOF
 * Build the image:
 
 ```console
-singularity build mpich.sif mpich.def
+SINGULARITY_BIND="" singularity build mpich.sif mpich.def
 ```
 
 
