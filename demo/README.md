@@ -828,37 +828,39 @@ SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULA
 
 * **Check:** Note that we are not resetting `SINGULARITY_BIND`:
 
-	```console
-	singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
-	echo $INSTALL_DIR
-	exit
-	```
+```console
+singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
+echo $INSTALL_DIR
+exit
+```
 
-	Output example:
+Output example:
 
-	```text
-	/container
-	```
+```text
+/container
+```
 
 
 ### Add MPICH Installation
 
 * **Installation script:** Copy&paste in `install_mpich.sh` file and run `chmod +x install_mpich.sh`:
 
-	```bash
-    VER=3.4a2
-     wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
-     tar xvf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz
-     pushd mpich-${VER}
-     sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure
-     FFLAGS='-fallow-argument-mismatch' \
-       ./configure --prefix=${INSTALL_DIR} --disable-static \
-                  --disable-rpath --disable-wrapper-rpath \
-                  --enable-fast=all,O3 --with-device=ch3 \
-                  --mandir=/usr/share/man
-      make -j$(getconf _NPROCESSORS_ONLN) install
-      popd && rm -rf mpich-${VER}
-	```
+```bash
+!#/usr/bin/bash
+
+VER=3.4a2
+wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
+tar xvf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz
+pushd mpich-${VER}
+sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure
+FFLAGS='-fallow-argument-mismatch' \
+        ./configure --prefix=${INSTALL_DIR} --disable-static \
+                    --disable-rpath --disable-wrapper-rpath \
+                    --enable-fast=all,O3 --with-device=ch3 \
+                    --mandir=/usr/share/man
+make -j$(getconf _NPROCESSORS_ONLN) install
+popd && rm -rf mpich-${VER}
+```
 
 
 
