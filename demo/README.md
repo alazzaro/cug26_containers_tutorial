@@ -32,6 +32,7 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [Build the Image with the Application](#build-the-image-with-the-application)
   - [Running Containers in Batch](#running-containers-in-batch)
     - [Run in Batch with SLURM](#run-in-batch-with-slurm)
+    - [Binding Host MPI and Network Libraries](#binding-host-mpi-and-network-libraries)
 
 
 ## LUMI
@@ -1051,9 +1052,10 @@ MPICH FC:	gfortran   -O3
 ```
 
 
+### Binding Host MPI and Network Libraries
 
+* Extraction of the bindings for running a container with MPI within SLURM. Copy&paste in `get_bind_mpi.sh` file and run `chmod +x get_bind_mpi.sh`:
 
-* Extraction of the bindings for running a container with MPI within SLURM
 
 ```bash
 #!/bin/bash -e
@@ -1074,6 +1076,11 @@ out=$(echo "$out" | grep 'open\|stat' | grep -v "No such file or directory" | gr
 SINGULARITY_BIND="/opt/cray,/var/spool"
 SINGULARITYENV_LD_LIBRARY_PATH=""
 
+# Add cray-mpich-abi path
+MPI_ABI_LIBS=$(module show cray-mpich-abi 2>&1 | grep CRAY_LD_LIBRARY_PATH | awk -F"\"" '{print $4}')
+SINGULARITY_BIND+=",${MPI_ABI_LIBS/:/,}"
+SINGULARITYENV_LD_LIBRARY_PATH+="${MPI_ABI_LIBS}"
+
 for i in $out ; do
     if [ ! -d $i ]; then
         SINGULARITY_BIND+=",$i"
@@ -1092,7 +1099,7 @@ echo "export SINGULARITYENV_LD_LIBRARY_PATH=\"\${SINGULARITYENV_LD_LIBRARY_PATH}
 
 EOFSUB
 
-sleep 1m
+sleep 10
 
 echo
 cat binding_mpi.sh
@@ -1101,6 +1108,23 @@ echo "Run 'source binding_mpi.sh' to set the environment for singularity host MP
 echo
 ```
 
+* Run the script `get_bind_mpi.sh`. It will produce a `binding_mpi.sh` file.
+
+* Run `source binding_mpi.sh`
+
+* Run the MPI example:
+
+```console
+srun -N 1 -n 2 ./srun_image.sh mpitest.sif mpitest.x
+```
+
+Output example:
+
+```text
+2
+MPI VERSION    : CRAY MPICH version 8.1.32.110 (ANL base 3.4a2)
+MPI BUILD INFO : Thu Feb 06 22:55 2025 (git hash f9c5634)
+```
 
 
 
