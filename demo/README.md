@@ -852,7 +852,9 @@ VER=3.4a2
 wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
 tar xvf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz
 pushd mpich-${VER}
+# Fix so version
 sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure
+chmod +x configure
 FFLAGS='-fallow-argument-mismatch' \
         ./configure --prefix=${INSTALL_DIR} --disable-static \
                     --disable-rpath --disable-wrapper-rpath \
