@@ -723,7 +723,7 @@ We can add the path to PROOT in the `lumi_g.sh` script.
 
 ### LUMI Base Image
 
-* Definition file `lumi_base.def`. Copy&paste in a new file:
+* **Definition file:** Copy&paste in `lumi_base.def` file:
 
 ```bash
 Bootstrap: docker
@@ -753,11 +753,11 @@ apt-get update && apt-get -y upgrade --no-install-recommends
 apt-get -y install --no-install-recommends \
 	  	build-essential wget file ca-certificates \
 	 	gfortran
-	  
+
 # Cleanup
 apt-get autoremove -y
 apt-get clean && rm -rf /var/lib/apt/lists/*
-	 
+
 # Installation dir
 export INSTALL_DIR=/container
 mkdir -p ${INSTALL_DIR}
@@ -766,9 +766,26 @@ mkdir -p ${INSTALL_DIR}
 echo "export INSTALL_DIR=${INSTALL_DIR}" >> ${SINGULARITY_ENVIRONMENT}
 echo "export PATH=\${INSTALL_DIR}/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT}
 echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${INSTALL_DIR}/lib" >> ${SINGULARITY_ENVIRONMENT}
+
+# Make bindings placeholders
+echo BIND_DIRS = {{ BIND_DIRS }}
+echo BIND_FILES = {{ BIND_FILES }}
+
+for var in {{ BIND_DIRS }}; do
+    echo "Make stub directory $var"
+    mkdir -p $var
+done
+
+for var in {{ BIND_FILES }}; do
+    echo "Make stub file $var"
+    mkdir -p $(dirname $var)
+    touch $var
+done
+
+
 ```
 
-* Script to run it (`lumi_base.sh`). Copy&paste on a new file and run `chmod +x lumi_base.sh`:
+* **Script for building:**  Copy&paste in `lumi_base.sh` file and run `chmod +x lumi_base.sh`:
 
 ```bash
 export SINGULARITY_BIND_DIRS=""
@@ -787,6 +804,8 @@ done
 
 echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
+
+SINGULARITY_BIND="" singularity build --cleanenv --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
 ```
 
 
