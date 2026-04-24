@@ -604,7 +604,7 @@ There are 2 ways:
 
 	```console
 	echo $PWD ; ls # Host directory
-	export SINGULARITY_BIND="/pfs,/scratch,/project,/flash"
+	export SINGULARITY_BIND="/pfs,/scratch,/project,/flash,/users"
 	singularity run --cleanenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
 	```
 
