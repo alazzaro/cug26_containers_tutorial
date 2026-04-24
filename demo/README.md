@@ -733,7 +733,7 @@ From: ubuntu:25.04
 # fake some of the commands not available with proot
 for f in /usr/sbin/group add /usr/sbin/addgroup /bin/chgrp; do
     rm -rf $f
-    ln-s /bin/true $f
+    ln -s /bin/true $f
 done
 # More workarounds, based on https://github.com/opencontainers/runc/issues/2517#issuecomment-1030859646
 apt-config dump | grep Sandbox::User
@@ -813,6 +813,22 @@ echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
 
 SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
+```
+
+* **Build:**  run the script `./lumi_base.sh`
+
+* **Check:** Note that we are not resetting `SINGULARITY_BIND`:
+
+```console
+singularity run --cleanenv lumi_base.imgdir
+echo $INSTALL_DIR
+exit
+```
+
+Output example:
+
+```text
+/container
 ```
 
 
