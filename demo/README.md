@@ -225,13 +225,13 @@ Set to the flash directory:
 export SINGULARITY_CACHEDIR=/flash/project_465002906/$USER/.singularity
 ```
 
-We can add these two lines to the `lumi_g.sh` script.
+We can add this line to the `lumi_g.sh` script.
 
 Commands to manage the cache are:
 
 ```console
-singularity cache clean
 singularity cache list
+singularity cache clean
 ```
 
 
@@ -633,7 +633,7 @@ Same procedure used for directories. The entire path to the file will be added, 
 
 ```console
 echo $PWD ; ls # Host directory
-singularity run --cleanenv -B $PWD/myenv gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
+SINGULARITY_BIND="" singularity run --cleanenv -B $PWD/myenvs gcc_15.2.0.sif bash -c 'echo $PWD ; ls'
 ```
 
 Output example:
@@ -827,7 +827,7 @@ SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULA
 
 * **Build:**  run the script `./lumi_base.sh`. It will start the building (few minutes to complete the procedure).
 
-* **Check:** Note that we are not resetting `SINGULARITY_BIND`:
+* **Check:** Note that we don't need to reset `SINGULARITY_BIND`:
 
 ```console
 singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
