@@ -771,18 +771,20 @@ echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:\${INSTALL_DIR}/lib" >> ${SINGU
 echo BIND_DIRS = {{ BIND_DIRS }}
 echo BIND_FILES = {{ BIND_FILES }}
 
-for var in {{ BIND_DIRS }}; do
-    echo "Make stub directory $var"
-    mkdir -p $var
-done
+if [ "{{ BIND_DIRS }}" != "0" ]; then
+	for var in {{ BIND_DIRS }}; do
+    	echo "Make stub directory $var"
+	    mkdir -p $var
+	done
+fi
 
-for var in {{ BIND_FILES }}; do
-    echo "Make stub file $var"
-    mkdir -p $(dirname $var)
-    touch $var
-done
-
-
+if [ "{{ BIND_FILES }}" != "0" ]; then
+	for var in {{ BIND_FILES }}; do
+    	echo "Make stub file $var"
+	    mkdir -p $(dirname $var)
+	    touch $var
+	 done
+fi
 ```
 
 * **Script for building:**  Copy&paste in `lumi_base.sh` file and run `chmod +x lumi_base.sh`:
@@ -790,7 +792,7 @@ done
 ```bash
 export SINGULARITY_BIND_DIRS=""
 export SINGULARITY_BIND_FILES=""
-for var in ${SINGULARITY_BINDPATH//,/ }; do
+for var in ${SINGULARITY_BIND//,/ }; do
     host_container=(${var//:/ })
     host_var=${host_container[0]}
     container_var=${host_container[1]}
@@ -805,7 +807,7 @@ done
 echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
 
-SINGULARITY_BIND="" singularity build --cleanenv --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
+SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
 ```
 
 
