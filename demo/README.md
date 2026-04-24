@@ -852,7 +852,7 @@ SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULA
      pushd mpich-${VER}
      sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure
      FFLAGS='-fallow-argument-mismatch' \
-       ./configure --prefix=${INSTALL_DIR}/mpi --disable-static \
+       ./configure --prefix=${INSTALL_DIR} --disable-static \
                   --disable-rpath --disable-wrapper-rpath \
                   --enable-fast=all,O3 --with-device=ch3 \
                   --mandir=/usr/share/man
