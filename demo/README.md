@@ -867,6 +867,20 @@ popd && rm -rf mpich-${VER}
 ```
 
 
+* **Run installation:**
+
+```console
+singularity run --writable --home $PWD:/home --cleanenv lumi_base.imgdir
+./install_mpich.sh
+exit
+```
+
+* **Convert to SIF:**
+
+```console
+singularity build mpich.sif lumi_base.imgdir
+```
+
 
 ### Definition File
 
