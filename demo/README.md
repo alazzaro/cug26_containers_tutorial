@@ -30,6 +30,8 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [LUMI Base Image](#lumi-base-image)
     - [Add MPICH Installation](#add-mpich-installation)
     - [Build the Image with the Application](#build-the-image-with-the-application)
+  - [Running Containers in Batch](#running-containers-in-batch)
+    - [Run in Batch with SLURM](#run-in-batch-with-slurm)
 
 
 ## LUMI
@@ -802,6 +804,8 @@ fi
 ```bash
 #!/usr/bin/bash
 
+IMG_FILENAME=lumi_base
+
 export SINGULARITY_BIND_DIRS=""
 export SINGULARITY_BIND_FILES=""
 for var in ${SINGULARITY_BIND//,/ }; do
@@ -822,7 +826,7 @@ export SINGULARITY_BIND_FILES=${SINGULARITY_BIND_FILES:-0}
 echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
 
-SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" lumi_base.imgdir lumi_base.def
+SINGULARITY_BIND="" singularity build --sandbox --build-arg BIND_DIRS="${SINGULARITY_BIND_DIRS}" --build-arg BIND_FILES="${SINGULARITY_BIND_FILES}" ${IMG_FILENAME}.imgdir ${IMG_FILENAME}.def
 ```
 
 * **Build:**  run the script `./lumi_base.sh`. It will start the building (few minutes to complete the procedure).
@@ -958,6 +962,144 @@ MPICH F77:	gfortran -fallow-argument-mismatch  -O3
 MPICH FC:	gfortran   -O3
 ```
 
+
+## Running Containers in Batch
+
+### Run in Batch with SLURM
+
+
+* Without network libraries binding
+
+```console
+srun -N 1 -n 2 singularity run --cleanenv mpitest.sif mpitest.x
+```
+
+Output example:
+
+```text
+1
+MPICH Version:	3.4a2
+MPICH Release date:	Wed Dec 18 14:46:35 CST 2019
+MPICH ABI:	12:0:0
+MPICH Device:	ch3:nemesis
+MPICH configure:	--prefix=/container --disable-static --disable-rpath --disable-wrapper-rpath --enable-fast=all,O3 --with-device=ch3 --mandir=/usr/share/man
+MPICH CC:	gcc    -DNDEBUG -DNVALGRIND -O3
+MPICH CXX:	g++   -DNDEBUG -DNVALGRIND -O3
+MPICH F77:	gfortran -fallow-argument-mismatch  -O3
+MPICH FC:	gfortran   -O3
+
+1
+MPICH Version:	3.4a2
+MPICH Release date:	Wed Dec 18 14:46:35 CST 2019
+MPICH ABI:	12:0:0
+MPICH Device:	ch3:nemesis
+MPICH configure:	--prefix=/container --disable-static --disable-rpath --disable-wrapper-rpath --enable-fast=all,O3 --with-device=ch3 --mandir=/usr/share/man
+MPICH CC:	gcc    -DNDEBUG -DNVALGRIND -O3
+MPICH CXX:	g++   -DNDEBUG -DNVALGRIND -O3
+MPICH F77:	gfortran -fallow-argument-mismatch  -O3
+MPICH FC:	gfortran   -O3
+```
+
+* Check which `PMI` are available
+
+```console
+srun --mpi=list
+```
+
+Output example:
+
+```text
+MPI plugin types are...
+	none
+	cray_shasta
+	pmi2
+```
+
+* Script to pass the proper environment variables. Copy&paste in `srun_image.sh` file and run `chmod +x srun_image.sh`:
+
+
+```bash
+#!/bin/bash
+
+SING_ENV_LIST=""
+for var in `env | grep -e ^SLURM -e ^PALS -e ^SRUN -e ^PMI -e ^HOST -e ^USER -e ^SLINGSHOT`; do
+    SING_ENV_LIST+=" --env $var"
+done
+
+singularity run --cleanenv ${SING_ENV_LIST} "$@"
+```
+
+* Run with `pmi2`
+
+```console
+srun --mpi=pmi2 -N 1 -n 2 ./srun_image.sh mpitest.sif mpitest.x
+```
+
+Output example:
+
+```text
+2
+MPICH Version:	3.4a2
+MPICH Release date:	Wed Dec 18 14:46:35 CST 2019
+MPICH ABI:	12:0:0
+MPICH Device:	ch3:nemesis
+MPICH configure:	--prefix=/container --disable-static --disable-rpath --disable-wrapper-rpath --enable-fast=all,O3 --with-device=ch3 --mandir=/usr/share/man
+MPICH CC:	gcc    -DNDEBUG -DNVALGRIND -O3
+MPICH CXX:	g++   -DNDEBUG -DNVALGRIND -O3
+MPICH F77:	gfortran -fallow-argument-mismatch  -O3
+MPICH FC:	gfortran   -O3
+```
+
+
+
+
+* Extraction of the bindings for running a container with MPI within SLURM
+
+```bash
+#!/bin/bash -e
+
+# Compile small MPI test program
+module load PrgEnv-gnu
+cc -O2 mpitest.c -o mpitest.x
+
+rm -f binding_mpi.sh
+
+sbatch -J get_bind --ntasks=4 --ntasks-per-node=2 --nodes=2 -t "10:00" --exclusive -W ${SLURM_FLAGS} <<'EOFSUB'
+#!/bin/bash -l
+
+out=$((srun strace -f -e trace=%file ./mpitest.x) 2>&1)
+echo "${out}"
+out=$(echo "$out" | grep 'open\|stat' | grep -v "No such file or directory" | grep -v "/proc" | grep -v "/dev" | grep -v "/sys" | grep -v "ld.so.cache" | grep -v "/var/spool" | awk -F"\"" '{print $2}' | grep -v -e "^/lib64" | sort | uniq)
+
+SINGULARITY_BIND="/opt/cray,/var/spool"
+SINGULARITYENV_LD_LIBRARY_PATH=""
+
+for i in $out ; do
+    if [ ! -d $i ]; then
+        SINGULARITY_BIND+=",$i"
+    fi
+    if `file -L $i | grep -q "shared object"` ; then
+       dirlib=$(dirname $i)
+       if ! `echo "${SINGULARITYENV_LD_LIBRARY_PATH}" | grep -q ":${dirlib}:"` ; then
+       	  SINGULARITYENV_LD_LIBRARY_PATH+="${dirlib}:"
+       fi
+    fi
+
+done
+
+echo "export SINGULARITY_BIND=\"\${SINGULARITY_BIND},${SINGULARITY_BIND}\"" > binding_mpi.sh
+echo "export SINGULARITYENV_LD_LIBRARY_PATH=\"\${SINGULARITYENV_LD_LIBRARY_PATH}:${SINGULARITYENV_LD_LIBRARY_PATH}\"" >> binding_mpi.sh
+
+EOFSUB
+
+sleep 1m
+
+echo
+cat binding_mpi.sh
+echo
+echo "Run 'source binding_mpi.sh' to set the environment for singularity host MPI binding."
+echo
+```
 
 
 
