@@ -848,6 +848,8 @@ Output example:
 ```bash
 #!/usr/bin/bash
 
+set -e
+
 VER=3.4a2
 wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
 tar xvf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz
