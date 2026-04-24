@@ -846,7 +846,7 @@ Output example:
 * **Installation script:** Copy&paste in `install_mpich.sh` file and run `chmod +x install_mpich.sh`:
 
 ```bash
-!#/usr/bin/bash
+#!/usr/bin/bash
 
 VER=3.4a2
 wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
