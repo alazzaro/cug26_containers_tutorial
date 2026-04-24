@@ -28,7 +28,8 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
     - [Writeable Sandbox Image](#writeable-sandbox-image)
     - [Installing PROOT](#installing-proot)
     - [LUMI Base Image](#lumi-base-image)
-    - [Definition File](#definition-file)
+    - [Add MPICH Installation](#add-mpich-installation)
+    - [Build the Image with the Application](#build-the-image-with-the-application)
 
 
 ## LUMI
@@ -908,56 +909,55 @@ int main( int argc, char *argv[])
 
 * **Recipe file:** Copy&paste in `mpitest.def` file.
 
-```console
+```bash
 Bootstrap: localimage
 From: mpich.sif
-	
+
+# Copy the input files
 %files
-mpitest.c ${INSTALL_DIR}/test_mpi/
+mpitest.c /test_mpi/
 
-
+%post -c /bin/bash -x
+set -e
+cd /test_mpi/
+# Build
+mpicc -O2 mpitest.c -o mpitest.x
+# Install
+source $SINGULARITY_ENVIRONMENT
+cp mpitest.x ${INSTALL_DIR}/bin
+cd ..
+rm -rf /test_mpi
 ```
 
-
-```	
-%post -c /bin/bash
-	apt-get update && apt-get -y upgrade --no-install-recommends
-	apt-get -y install --no-install-recommends \
-	  	    build-essential wget file ca-certificates \
-	 	    gfortran
-	  
-	 # Cleanup 
-	 apt-get autoremove -y 
-	 apt-get clean && rm -rf /var/lib/apt/lists/* 
-	 
-	 # Installation dir 
-	 export INSTALL_DIR=/container 
-	 mkdir -p ${INSTALL_DIR} 
-	 
-	 VER=3.4a2
-	 wget -q http://www.mpich.org/static/downloads/$VER/mpich-$VER.tar.gz
-	 tar xvf mpich-${VER}.tar.gz && rm mpich-${VER}.tar.gz 
-	 pushd mpich-${VER} 
-	 sed -i 's/libmpi_so_version="0:0:0"/libmpi_so_version="12:0:0"/g' configure
-	 chmod +x configure
-	 FFLAGS='-fallow-argument-mismatch' \
-	   ./configure --prefix=${INSTALL_DIR}/mpi --disable-static \
-	              --disable-rpath --disable-wrapper-rpath \
-	              --enable-fast=all,O3 --with-device=ch3 \
-	              --mandir=/usr/share/man
-	  make -j$(getconf _NPROCESSORS_ONLN) install
-	  popd && rm -rf mpich-${VER}
-	  echo "export PATH=${INSTALL_DIR}/mpi/bin:\$PATH" >> ${SINGULARITY_ENVIRONMENT}
-	  echo "export LD_LIBRARY_PATH=\${LD_LIBRARY_PATH}:${INSTALL_DIR}/mpi/lib" >> ${SINGULARITY_ENVIRONMENT}
-
-EOF
-```
-
-* Build the image:
+* **Build application image:**
 
 ```console
-SINGULARITY_BIND="" singularity build mpich.sif mpich.def
+singularity build mpitest.sif mpitest.def
 ```
+
+* **Easy check:** run within the container:
+
+```console
+singularity run --cleanenv mpitest.sif
+mpirun -np 2 mpitest.x
+exit
+```
+
+Output example:
+
+```text
+2
+MPICH Version:	3.4a2
+MPICH Release date:	Wed Dec 18 14:46:35 CST 2019
+MPICH ABI:	12:0:0
+MPICH Device:	ch3:nemesis
+MPICH configure:	--prefix=/container --disable-static --disable-rpath --disable-wrapper-rpath --enable-fast=all,O3 --with-device=ch3 --mandir=/usr/share/man
+MPICH CC:	gcc    -DNDEBUG -DNVALGRIND -O3
+MPICH CXX:	g++   -DNDEBUG -DNVALGRIND -O3
+MPICH F77:	gfortran -fallow-argument-mismatch  -O3
+MPICH FC:	gfortran   -O3
+```
+
 
 
 
