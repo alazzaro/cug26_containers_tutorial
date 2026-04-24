@@ -27,6 +27,7 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
   - [Images Building](#images-building)
     - [Writeable Sandbox Image](#writeable-sandbox-image)
     - [Installing PROOT](#installing-proot)
+    - [LUMI Base Image](#lumi-base-image)
     - [Definition File](#definition-file)
 
 
