@@ -790,6 +790,8 @@ fi
 * **Script for building:**  Copy&paste in `lumi_base.sh` file and run `chmod +x lumi_base.sh`:
 
 ```bash
+#!/usr/bin/bash
+
 export SINGULARITY_BIND_DIRS=""
 export SINGULARITY_BIND_FILES=""
 for var in ${SINGULARITY_BIND//,/ }; do
@@ -803,6 +805,9 @@ for var in ${SINGULARITY_BIND//,/ }; do
     fi
 
 done
+
+export SINGULARITY_BIND_DIRS=${SINGULARITY_BIND_DIRS:-0}
+export SINGULARITY_BIND_FILES=${SINGULARITY_BIND_FILES:-0}
 
 echo SINGULARITY_BIND_DIRS = $SINGULARITY_BIND_DIRS
 echo SINGULARITY_BIND_FILES = $SINGULARITY_BIND_FILES
