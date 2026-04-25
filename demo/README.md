@@ -620,7 +620,7 @@ There are 2 ways:
 	/pfs/lustrep3/scratch/project_465002906/alfiolaz
 	gcc_15.2.0.imgdir  gcc_15.2.0.sif  lumi_g.sh  myenvs
 	```
-	
+
 	We can add `SINGULARITY_BIND` to the `lumi_g.sh` script.
 
 2. Setting the `-B src[:dest[:opts]]` option (`src`, `dest`, `opts` as in case 1).
@@ -654,11 +654,11 @@ Let's build an `helloworld` example:
 
 ```console
 cat << EOF > helloworld.cxx
-#include <iostream> 
-int main() 
-{ 
+#include <iostream>
+int main()
+{
   std::cout << "Hello World!" << std::endl;
-  return 0; 
+  return 0;
 }
 EOF
 singularity run --cleanenv gcc_15.2.0.sif
@@ -1023,7 +1023,7 @@ MPI plugin types are...
 #!/bin/bash
 
 SING_ENV_LIST=""
-for var in `env | grep -e ^SLURM -e ^PALS -e ^SRUN -e ^PMI -e ^HOST -e ^USER -e ^SLINGSHOT`; do
+for var in `env | grep -e ^SLURM -e ^PALS -e ^SRUN -e ^PMI -e ^HOST -e ^USER -e ^SLINGSHOT -e ^MPICH_ -e ^FI_`; do
     SING_ENV_LIST+=" --env $var"
 done
 
@@ -1125,7 +1125,3 @@ Output example:
 MPI VERSION    : CRAY MPICH version 8.1.32.110 (ANL base 3.4a2)
 MPI BUILD INFO : Thu Feb 06 22:55 2025 (git hash f9c5634)
 ```
-
-
-
-
