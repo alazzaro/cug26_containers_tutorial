@@ -33,6 +33,7 @@ For convenience, you can copy&paste the commands on your terminal on LUMI.
   - [Running Containers in Batch](#running-containers-in-batch)
     - [Run in Batch with SLURM](#run-in-batch-with-slurm)
     - [Binding Host MPI and Network Libraries](#binding-host-mpi-and-network-libraries)
+	- [OSU Benchmark Example](#osu-benchmark-example)
 
 
 ## LUMI
@@ -1124,4 +1125,73 @@ Output example:
 2
 MPI VERSION    : CRAY MPICH version 8.1.32.110 (ANL base 3.4a2)
 MPI BUILD INFO : Thu Feb 06 22:55 2025 (git hash f9c5634)
+```
+
+### OSU Benchmark Example
+
+* **Installation script:** Copy&paste in `install_osu.sh` file and run `chmod +x install_osu.sh`:
+
+```bash
+#!/usr/bin/bash -x
+
+set -e
+VERSION=7.5.2
+wget https://mvapich.cse.ohio-state.edu/download/mvapich/osu-micro-benchmarks-$VERSION.tar.gz
+tar xf osu-micro-benchmarks-$VERSION.tar.gz
+rm osu-micro-benchmarks-$VERSION.tar.gz
+cd osu-micro-benchmarks-$VERSION
+
+./configure --prefix=${INSTALL_DIR} CC=mpicc CXX=mpicxx CFLAGS=-O3 CXXFLAGS=-O3
+make -j 10 install
+cd ..
+rm -rf osu-micro-benchmarks-$VERSION
+chmod -R u=rwX,go=rX ${INSTALL_DIR}
+```
+
+
+* **Build the image:**
+
+```console
+singularity build --sandbox osu.imgdir mpich.sif # We use the MPICH image as base
+singularity run --writable --home $PWD:/home --cleanenv osu.imgdir
+./install_osu.sh
+exit
+singularity build osu.sif osu.imgdir
+```
+
+* **Run a benchmark:**
+
+```console
+srun -N 2 --ntasks-per-node=1 ./srun_image.sh osu.sif "/container/libexec/osu-micro-benchmarks/mpi/pt2pt/osu_bibw -b multiple"
+```
+
+Output example:
+
+```text
+# OSU MPI Bi-Directional Bandwidth Test v7.5.2
+# Datatype: MPI_CHAR.
+# Size      Bandwidth (MB/s)
+1                       2.03
+2                       4.11
+4                       8.20
+8                      16.57
+16                     33.02
+32                     65.20
+64                    129.37
+128                   262.98
+256                   465.36
+512                   939.42
+1024                 1873.85
+2048                 3732.52
+4096                 7313.00
+8192                14932.94
+16384               22657.60
+32768               25639.07
+65536               28440.44
+131072              31109.36
+262144              29793.98
+524288              30494.01
+1048576             31802.02
+2097152             31772.32
+4194304             30128.30
 ```
