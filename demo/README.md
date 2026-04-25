@@ -1080,7 +1080,7 @@ SINGULARITYENV_LD_LIBRARY_PATH=""
 # Add cray-mpich-abi path
 MPI_ABI_LIBS=$(module show cray-mpich-abi 2>&1 | grep CRAY_LD_LIBRARY_PATH | awk -F"\"" '{print $4}')
 SINGULARITY_BIND+=",${MPI_ABI_LIBS/:/,}"
-SINGULARITYENV_LD_LIBRARY_PATH+="${MPI_ABI_LIBS}"
+SINGULARITYENV_LD_LIBRARY_PATH+="${MPI_ABI_LIBS}:"
 
 for i in $out ; do
     if [ ! -d $i ]; then
