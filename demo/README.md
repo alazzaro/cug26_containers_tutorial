@@ -736,7 +736,7 @@ From: ubuntu:25.04
 
 %post -c /bin/bash
 # fake some of the commands not available with proot
-for f in /usr/sbin/group add /usr/sbin/addgroup /bin/chgrp; do
+for f in /usr/sbin/groupadd /usr/sbin/addgroup /bin/chgrp; do
     rm -rf $f
     ln -s /bin/true $f
 done
